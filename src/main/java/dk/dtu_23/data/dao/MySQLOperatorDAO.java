@@ -1,9 +1,9 @@
 package dk.dtu_23.data.dao;
 
-import connector01917.Connector;
-import daointerfaces01917.DALException;
-import daointerfaces01917.OperatorDAO;
-import dto01917.OperatorDTO;
+import dk.dtu_23.data.connector.Connector;
+import dk.dtu_23.data.interfaces.DALException;
+import dk.dtu_23.data.interfaces.OperatorDAO;
+import dk.dtu_23.model.OperatorDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.List;
 public class MySQLOperatorDAO implements OperatorDAO {
 
 	public OperatorDTO getOperator(int oprId) throws DALException {
-		ResultSet rs = Connector.doQuery("SELECT * FROM operatoer WHERE opr_id = " + oprId + ";");
+		ResultSet rs = Connector.doQuery("SELECT * FROM operator WHERE opr_id = " + oprId + ";");
 		try {
 			if (!rs.first()) throw new DALException("Operator with id " + oprId + " does not exist");
 			return new OperatorDTO (rs.getInt("opr_id"), rs.getString("opr_name"), rs.getString("ini"), rs.getString("cpr"), rs.getString("password"), rs.getBoolean("admin"), rs.getString("role"));

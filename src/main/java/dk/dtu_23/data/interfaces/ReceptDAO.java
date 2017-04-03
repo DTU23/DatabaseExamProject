@@ -1,6 +1,6 @@
 package dk.dtu_23.data.interfaces;
 
-import dto01917.ReceptDTO;
+import dk.dtu_23.model.ReceptDTO;
 
 import java.util.List;
 

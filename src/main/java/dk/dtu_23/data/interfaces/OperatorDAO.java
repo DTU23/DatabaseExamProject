@@ -1,6 +1,6 @@
 package dk.dtu_23.data.interfaces;
 
-import dto01917.OperatorDTO;
+import dk.dtu_23.model.OperatorDTO;
 
 import java.util.List;
 

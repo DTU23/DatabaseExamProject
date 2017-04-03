@@ -1,6 +1,6 @@
 package dk.dtu_23.data.interfaces;
 
-import dto01917.ProduceDTO;
+import dk.dtu_23.model.ProduceDTO;
 
 import java.util.List;
 

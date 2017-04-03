@@ -1,9 +1,9 @@
 package dk.dtu_23.data.dao;
 
-import connector01917.Connector;
-import daointerfaces01917.DALException;
-import daointerfaces01917.ProductBatchCompDAO;
-import dto01917.ProductBatchCompDTO;
+import dk.dtu_23.data.connector.Connector;
+import dk.dtu_23.data.interfaces.DALException;
+import dk.dtu_23.data.interfaces.ProductBatchCompDAO;
+import dk.dtu_23.model.ProductBatchCompDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,8 +25,6 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 		{
 			while (rs.next())
 			{
-				list.add(new ProductBatchCompDTO(
-				));
 			}
 		}
 		catch (SQLException e) { throw new DALException(e); }
