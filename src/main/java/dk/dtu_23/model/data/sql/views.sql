@@ -20,7 +20,7 @@ CREATE OR REPLACE VIEW product_batch_list AS
   FROM productbatch NATURAL JOIN recipe;
 
 # product_batch_component (Pharmacist)
-CREATE OR REPLACE VIEW product_batch_component_list AS
+CREATE OR REPLACE VIEW product_batch_component_overview AS
   SELECT pb_id, recipe_name, productbatch.status, produce_name, netto, opr_id
   FROM recipe NATURAL JOIN productbatch NATURAL JOIN productbatchcomponent
   NATURAL JOIN producebatch NATURAL JOIN produce
