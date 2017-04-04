@@ -9,5 +9,4 @@ public interface OperatorDAO {
 	List<OperatorDTO> getOperatorList() throws DALException;
 	void createOperator(OperatorDTO opr) throws DALException;
 	void updateOperator(OperatorDTO opr) throws DALException;
-	String getOperatorNameFromID(int id) throws DALException;
 }

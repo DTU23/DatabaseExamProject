@@ -1,11 +1,9 @@
 package dk.dtu_23.model.data.dao;
 
-
-import dk.dtu_23.model.ProduceOverviewDTO;
+import dk.dtu_23.model.ProduceDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProduceDAO;
-import dk.dtu_23.model.ProduceDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,23 +47,5 @@ public class MySQLProduceDAO implements ProduceDAO {
 	@Override
 	public void updateProduce(ProduceDTO produce) throws DALException {
 		Connector.doQuery("UPDATE produce SET produce_name="+produce.getProduceName()+", supplier="+produce.getSupplier()+"WHERE produce_id="+produce.getProduceId()+";");
-	}
-
-	public List<ProduceOverviewDTO> getProduceOverview() throws DALException{
-		List<ProduceOverviewDTO> list = new ArrayList<ProduceOverviewDTO>();
-		ResultSet rs = Connector.doQuery("SELECT * FROM produce_overview;");
-		try
-		{
-			while (rs.next())
-			{
-				list.add(new ProduceOverviewDTO(
-						rs.getInt("produce_id"),
-						rs.getString("produce_name"),
-						rs.getDouble("amount")
-				));
-			}
-		}
-		catch (SQLException e) { throw new DALException(e); }
-		return list;
 	}
 }

@@ -1,9 +1,9 @@
 package dk.dtu_23.model.data.dao;
 
+import dk.dtu_23.model.ProductBatchDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProductBatchDAO;
-import dk.dtu_23.model.ProductBatchDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

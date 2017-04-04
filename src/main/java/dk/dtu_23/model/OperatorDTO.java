@@ -1,13 +1,12 @@
 package dk.dtu_23.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * Operatoer Data Access Objekt
  * 
  * @author mn/tb
  * @version 1.2
  */
+
 public class OperatorDTO
 {
 	/** Operatoer-identifikationsnummer (opr_id) i omraadet 1-99999999. Vaelges af brugerne */

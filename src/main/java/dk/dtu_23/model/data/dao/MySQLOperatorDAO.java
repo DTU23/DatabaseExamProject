@@ -1,9 +1,9 @@
 package dk.dtu_23.model.data.dao;
 
+import dk.dtu_23.model.OperatorDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.OperatorDAO;
-import dk.dtu_23.model.OperatorDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +33,7 @@ public class MySQLOperatorDAO implements OperatorDAO {
 
 	public List<OperatorDTO> getOperatorList() throws DALException {
 		List<OperatorDTO> list = new ArrayList<OperatorDTO>();
-		ResultSet rs = Connector.doQuery("SELECT * FROM operator;");
+		ResultSet rs = Connector.doQuery("SELECT * FROM operator_list;");
 		try
 		{
 			while (rs.next()) 
@@ -44,14 +44,4 @@ public class MySQLOperatorDAO implements OperatorDAO {
 		catch (SQLException e) { throw new DALException(e); }
 		return list;
 	}
-
-	public String getOperatorNameFromID(int oprId) throws DALException {
-		ResultSet rs = Connector.doQuery("CALL get_operator_name_from_id(" + oprId + ");");
-		try {
-			if (!rs.first()) throw new DALException("Operator with id " + oprId + " does not exist");
-			return rs.getString("opr_name");
-		}
-		catch (SQLException e) {throw new DALException(e); }
-	}
 }
-
