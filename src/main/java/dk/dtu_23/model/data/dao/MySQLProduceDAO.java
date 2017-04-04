@@ -43,12 +43,12 @@ public class MySQLProduceDAO implements ProduceDAO {
 
 	@Override
 	public void createProduce(ProduceDTO produce) throws DALException {
-		Connector.doQuery();
+		Connector.doQuery("");
 	}
 
 	@Override
 	public void updateProduce(ProduceDTO produce) throws DALException {
-		Connector.doQuery();
+		Connector.doQuery("");
 	}
 
 	public List<ProduceOverviewDTO> getProduceOverview() throws DALException{
