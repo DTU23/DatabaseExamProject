@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS producebatch;
 DROP TABLE IF EXISTS produce;
 
 CREATE TABLE operator(
-   opr_id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
+   opr_id INT PRIMARY KEY,
    opr_name TEXT,
    ini TEXT,
    cpr TEXT,
@@ -39,11 +39,11 @@ CREATE TABLE productbatchcomponent(pb_id INT, rb_id INT, tara REAL, netto REAL, 
    FOREIGN KEY (opr_id) REFERENCES operator(opr_id)) ENGINE=innoDB;
 
 
-INSERT INTO operator(opr_name, ini, cpr, password, admin, role) VALUES
-('Angelo A', 'AA', '070770-7007', 'lKje4fa', FALSE, 'Foreman'),
-('Antonella B', 'AB', '080880-8008', 'atoJ21v', FALSE, 'Pharmacist'),
-('Luigi C', 'LC', '090990-9009', 'jEfm5aQ', FALSE, 'Operator'),
-('Super Admin', 'SA', '000000-0000', 'admin', TRUE, 'Pharmacist');
+INSERT INTO operator(opr_id, opr_name, ini, cpr, password, admin, role) VALUES
+(1, 'Angelo A', 'AA', '070770-7007', 'lKje4fa', FALSE, 'Foreman'),
+(2, 'Antonella B', 'AB', '080880-8008', 'atoJ21v', FALSE, 'Pharmacist'),
+(3, 'Luigi C', 'LC', '090990-9009', 'jEfm5aQ', FALSE, 'Operator'),
+(4, 'Super Admin', 'SA', '000000-0000', 'admin', TRUE, 'Pharmacist');
 
 INSERT INTO produce(produce_id, produce_name, supplier) VALUES
 (1, 'dej', 'Wawelka'),
