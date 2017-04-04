@@ -32,7 +32,13 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 		{
 			while (rs.next())
 			{
-				list.add(new ProductBatchCompDTO(rs.getInt("pbId"), rs.getInt("rbId"), rs.getDouble("tara"), rs.getDouble("netto"), rs.getInt("oprId")));
+				list.add(new ProductBatchCompDTO(
+						rs.getInt("pbId"),
+						rs.getInt("rbId"),
+						rs.getDouble("tara"),
+						rs.getDouble("netto"),
+						rs.getInt("oprId")
+				));
 			}
 		}
 		catch (SQLException e) { throw new DALException(e); }
