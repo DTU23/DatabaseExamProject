@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS delete_produce_batch_by_id;
 DROP PROCEDURE IF EXISTS create_produce;
 DROP PROCEDURE IF EXISTS update_produce_by_id;
 DROP PROCEDURE IF EXISTS create_product_batch_component;
-DROP PROCEDURE IF EXISTS get_product_batch_component_supplier_details_by_rb_id;
+DROP PROCEDURE IF EXISTS get_product_batch_component_supplier_details_by_pb_id;
 DROP PROCEDURE IF EXISTS create_product_batch_from_recipe_id;
 DROP PROCEDURE IF EXISTS update_product_batch_status;
 DROP PROCEDURE IF EXISTS create_recipe;
@@ -125,12 +125,12 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE get_product_batch_component_supplier_details_by_rb_id
-(IN input_rb_id INT)
+CREATE PROCEDURE get_product_batch_component_supplier_details_by_pb_id
+(IN input_pb_id INT)
 BEGIN
   SELECT productbatchcomponent.rb_id, produce_name, supplier, netto, opr_id
   FROM productbatchcomponent NATURAL JOIN produce NATURAL JOIN producebatch
-  WHERE productbatchcomponent.pb_id = input_rb_id;
+  WHERE productbatchcomponent.pb_id = input_pb_id;
 END //
 DELIMITER ;
 
