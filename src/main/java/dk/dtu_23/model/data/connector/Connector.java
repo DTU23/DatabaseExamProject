@@ -1,6 +1,6 @@
-package dk.dtu_23.data.connector;
+package dk.dtu_23.model.data.connector;
 
-import dk.dtu_23.data.interfaces.DALException;
+import dk.dtu_23.model.data.interfaces.DALException;
 
 import java.sql.*;
 

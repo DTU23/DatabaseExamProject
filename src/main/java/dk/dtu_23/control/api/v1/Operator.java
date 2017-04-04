@@ -1,7 +1,7 @@
 package dk.dtu_23.control.api.v1;
 
-import dk.dtu_23.data.dao.MySQLOperatorDAO;
-import dk.dtu_23.data.interfaces.DALException;
+import dk.dtu_23.model.data.dao.MySQLOperatorDAO;
+import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.OperatorDTO;
 
 import javax.ws.rs.*;
@@ -24,13 +24,14 @@ public class Operator {
     }
 
     @GET
-    @Path("/{opr_id}")
+    @Path("{opr_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public OperatorDTO getOperator(@PathParam("opr_id") String oprId) {
         return list.get(Integer.parseInt(oprId));
     }
 
     @GET
+    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<OperatorDTO> getOperator() {
         return list;

@@ -1,9 +1,9 @@
-package dk.dtu_23.data.dao;
+package dk.dtu_23.model.data.dao;
 
 
-import dk.dtu_23.data.connector.Connector;
-import dk.dtu_23.data.interfaces.DALException;
-import dk.dtu_23.data.interfaces.ProduceDAO;
+import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
+import dk.dtu_23.model.data.interfaces.ProduceDAO;
 import dk.dtu_23.model.ProduceDTO;
 
 import java.sql.ResultSet;

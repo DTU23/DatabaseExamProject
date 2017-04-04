@@ -1,4 +1,4 @@
-package dk.dtu_23.data.interfaces;
+package dk.dtu_23.model.data.interfaces;
 
 import dk.dtu_23.model.ProduceDTO;
 

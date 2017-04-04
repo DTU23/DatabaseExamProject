@@ -1,4 +1,4 @@
-package dk.dtu_23.data.connector;
+package dk.dtu_23.model.data.connector;
 
 
 // erstat konstanterne nedenfor
