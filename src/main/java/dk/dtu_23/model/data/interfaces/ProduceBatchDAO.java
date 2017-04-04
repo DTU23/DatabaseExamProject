@@ -1,14 +1,13 @@
 package dk.dtu_23.model.data.interfaces;
 
 import dk.dtu_23.model.ProduceBatchDTO;
+import dk.dtu_23.model.ProduceDTO;
 
 import java.util.List;
 
 public interface ProduceBatchDAO {
-	ProduceBatchDTO getRaavareBatch(int rbId) throws DALException;
-	List<ProduceBatchDTO> getRaavareBatchList() throws DALException;
-	List<ProduceBatchDTO> getRaavareBatchList(int raavareId) throws DALException;
-	void createRaavareBatch(ProduceBatchDTO raavarebatch) throws DALException;
-	void updateRaavareBatch(ProduceBatchDTO raavarebatch) throws DALException;
+	ProduceBatchDTO getProduceBatch(int rbId) throws DALException;
+	List<ProduceBatchDTO> getProduceBatchList() throws DALException;
+	void createProduceBatch(ProduceDTO produce, double amount) throws DALException;
+	void updateProduceBatch(ProduceBatchDTO producebatch, double amount) throws DALException;
 }
-

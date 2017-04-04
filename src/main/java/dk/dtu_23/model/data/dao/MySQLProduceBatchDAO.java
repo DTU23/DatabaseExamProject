@@ -1,5 +1,6 @@
 package dk.dtu_23.model.data.dao;
 
+import dk.dtu_23.model.ProduceDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProduceBatchDAO;
@@ -46,17 +47,12 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 	}
 
 	@Override
-	public List<ProduceBatchDTO> getProduceBatchList(int produceId) throws DALException {
-		return null;
+	public void createProduceBatch(ProduceDTO produce, double amount) throws DALException {
+		Connector.doQuery("CALL create_produce_batch_from_produce_id("+produce.getProduceId()+", "+amount+");");
 	}
 
 	@Override
-	public void createProduceBatch(ProduceBatchDTO producebatch) throws DALException {
-		Connector.doQuery("INSERT INTO producebatch(rb_id, produce_id, amount) VALUES("+producebatch.getId()+", "+producebatch.getProduceName()+" ,"+producebatch.getAmount()+");");
-	}
-
-	@Override
-	public void updateProduceBatch(ProduceBatchDTO producebatch) throws DALException {
-		Connector.doQuery("UPDATE produce SET produce_id="+producebatch.getProduceName()+", amount="+producebatch.getAmount()+" WHERE pb_id="+producebatch.getId()+";");
+	public void updateProduceBatch(ProduceBatchDTO producebatch, double amount) throws DALException {
+		Connector.doQuery("CALL update_produce_batch_by_id("+producebatch.getId()+", "+amount+");");
 	}
 }
