@@ -46,11 +46,6 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 	}
 
 	@Override
-	public List<ProduceBatchDTO> getProduceBatchList(int produceId) throws DALException {
-		return null;
-	}
-
-	@Override
 	public void createProduceBatch(ProduceBatchDTO producebatch) throws DALException {
 		Connector.doQuery("INSERT INTO producebatch(rb_id, produce_id, amount) VALUES("+producebatch.getId()+", "+producebatch.getProduceName()+" ,"+producebatch.getAmount()+");");
 	}

@@ -7,7 +7,6 @@ import java.util.List;
 public interface ProduceBatchDAO {
 	ProduceBatchDTO getProduceBatch(int rbId) throws DALException;
 	List<ProduceBatchDTO> getProduceBatchList() throws DALException;
-	List<ProduceBatchDTO> getProduceBatchList(int produceId) throws DALException;
 	void createProduceBatch(ProduceBatchDTO producebatch) throws DALException;
 	void updateProduceBatch(ProduceBatchDTO producebatch) throws DALException;
 }
