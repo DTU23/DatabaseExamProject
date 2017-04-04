@@ -31,7 +31,6 @@ public class Operator {
     }
 
     @GET
-    @Path("")
     @Produces(MediaType.APPLICATION_JSON)
     public List<OperatorDTO> getOperator() {
         return list;
