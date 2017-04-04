@@ -2,24 +2,26 @@ package dk.dtu_23.model;
 
 public class ProduceBatchDTO
 {
-	int rbId;                     // i omraadet 1-99999999
-	int amountId;             // i omraadet 1-99999999
-	double amount;             // kan vaere negativ 
+	private int rbId;                     // i omraadet 1-99999999
+	private String produceName;             // i omraadet 1-99999999
+	private String supplier;             // kan vaere negativ
+	private double amount;
 
-	public ProduceBatchDTO(int rbId, int amountId, double amount)
+	public ProduceBatchDTO(int rbId, String produceName, String supplier, double amount)
 	{
 		this.rbId = rbId;
-		this.amountId = amountId;
+		this.produceName = produceName;
+		this.supplier = supplier;
 		this.amount = amount;
 	}
 	
-	public int getRbId() { return rbId; }
-	public void setRbId(int rbId) { this.rbId = rbId; }
-	public int getProduceId() { return amountId; }
-	public void setProduceId(int amountId) { this.amountId = amountId; }
-	public double getAmount() { return amount; }
+	public int getId() { return this.rbId; }
+	public void setId(int rbId) { this.rbId = rbId; }
+	public String getProduceName() { return this.produceName; }
+	public void setProduceName(String produceName) { this.produceName = produceName; }
+	public double getAmount() { return this.amount; }
 	public void setAmount(double amount) { this.amount = amount; }
 	public String toString() { 
-		return rbId + "\t" + amountId +"\t" + amount; 
+		return this.rbId + "\t" + this.produceName +"\t" + this.supplier +"\t" + this.amount;
 	}
 }

@@ -6,23 +6,19 @@ package dk.dtu_23.model;
  * @author mn/sh/tb
  * @version 1.2
  */
-
-public class ProduceDTO
+public class ProduceOverviewDTO
 {
-    /** i omraadet 1-99999999 vaelges af brugerne */
     private int produceId;
-    /** min. 2 max. 20 karakterer */
     private String produceName;
-    /** min. 2 max. 20 karakterer */
-    private String supplier;
-	
-	public ProduceDTO(int produceId, String produceName, String supplier)
+    private double amount;
+
+	public ProduceOverviewDTO(int produceId, String produceName, double amount)
 	{
 		this.produceId = produceId;
 		this.produceName = produceName;
-		this.supplier = supplier;
+		this.amount = amount;
 	}
-	
+
     public int getProduceId() {
 	    return produceId;
 	}
@@ -35,13 +31,13 @@ public class ProduceDTO
     public void setProduceName(String produceName) {
 	    this.produceName = produceName;
 	}
-    public String getSupplier() {
-	    return this.supplier;
+    public double getAmount() {
+	    return this.amount;
 	}
-    public void setSupplier(String amount) {
-	    this.supplier = amount;
+    public void setAmount(double amount) {
+	    this.amount = amount;
 	}
     public String toString() { 
-		return this.produceId + "\t" + this.produceName +"\t" + this.supplier;
+		return this.produceId + "\t" + this.produceName +"\t" + this.amount;
 	}
 }
