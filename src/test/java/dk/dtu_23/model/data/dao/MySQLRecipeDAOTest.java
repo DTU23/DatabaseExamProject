@@ -2,6 +2,7 @@ package dk.dtu_23.model.data.dao;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.dao.MySQLRecipeDAO;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProductBatchCompDAO;
@@ -19,86 +21,94 @@ import dk.dtu_23.model.RecipeDTO;
 
 public class MySQLRecipeDAOTest {
 
-	MySQLRecipeDAO recipe = new MySQLRecipeDAO();
+	MySQLRecipeDAO recipe;
+
+	@Before
+	public void setUp() throws Exception {
+		//TODO mangler noget reset database
+		try { new Connector(); } 
+		catch (InstantiationException e) { e.printStackTrace(); }
+		catch (IllegalAccessException e) { e.printStackTrace(); }
+		catch (ClassNotFoundException e) { e.printStackTrace(); }
+		catch (SQLException e) { e.printStackTrace(); }
+		recipe = new MySQLRecipeDAO();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		//TODO mangler noget reset database
+		recipe = null;
+	}
+
+	/**
+	 * Positive get Recipe test
+	 */
 
 	@Test
 	public void positiveGetRecipe() {
+		RecipeDTO actual = null;
+		RecipeDTO expected = new RecipeDTO(3, "capricciosa");
 		try {
-			RecipeDTO expected = new RecipeDTO(3, "capricciosa");
-			RecipeDTO actual = recipe.getRecipe(3);
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			actual = recipe.getRecipe(3);	
+		} catch (DALException e) {	System.out.println(e.getMessage());  }
+		assertEquals(expected, actual);
+	}
+
+	/**
+	 * Negative get Recipe test
+	 */
+
+	@Test
+	public void getRecipeByIDThatDoesntExist() {
+		String errorMsg = null;
+		try {
+			recipe.getRecipe(5);
+		} catch (DALException e) {	errorMsg = e.getMessage();	}
+		assertEquals(errorMsg, "Recipe with id 5 does not exist");
 
 	}
-	@Test
-	public void getRecipeOutOfBounds() {
-		try {
-			RecipeDTO expected = new RecipeDTO(5, null); // Rettes til fejlmeddelse så testen bliver positiv?
-			RecipeDTO actual = recipe.getRecipe(5);
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-	}
-	@Test
-	public void getRecipeIntPlusOne() {
-		try {
-			RecipeDTO expected = new RecipeDTO(Integer.MAX_VALUE+1, null);
-			RecipeDTO actual = recipe.getRecipe(Integer.MAX_VALUE+1);
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	/**
+	 * Positive get recipe list test
+	 */
+
 	@Test
 	public void positiveGetListRecipe() {
+		List<RecipeDTO> actual = null;
 		try {
-			List<RecipeDTO> expected = new ArrayList<RecipeDTO>();
-			expected.add(new RecipeDTO(1, "margherita"));
-			expected.add(new RecipeDTO(2, "prosciutto"));
-			expected.add(new RecipeDTO(3, "capricciosa"));
-			List<RecipeDTO> actual = recipe.getRecipeList();
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			actual = recipe.getRecipeList();
+		} catch (DALException e) {	System.out.println(e.getMessage());}
+		assertTrue(actual != null);
 
 	}
 
+	/**
+	 * Positive create recipe test
+	 */
 	@Test
 	public void positiveCreateRecipe() {
+		RecipeDTO expected = new RecipeDTO(4, "salami");
+		RecipeDTO actual = null;
 		try {
-			RecipeDTO recipe1 = new RecipeDTO(4, "salami");
-			recipe.createRecipe(recipe1);
-			RecipeDTO expected = new RecipeDTO(4, "salami");
-			RecipeDTO actual = recipe.getRecipe(4);
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			recipe.createRecipe(expected);
+			actual = recipe.getRecipe(4);
+		} catch (DALException e) {	System.out.println(e.getMessage());}
+		assertEquals(expected, actual);
 	}
 
-	//CreateRecipe() autogenerer ID, så man vil ikke kunne overskrive en anden.  
+	/**
+	 * negative test for create recipe. 
+	 * Auto-generates an ID so cant create on existing.  
+	 */
 	@Test
-	public void CreateRecipeOnExistingID() {
+	public void createRecipeOnExistingID() {
+		RecipeDTO expected = new RecipeDTO(1, "parmaskinke");
+		RecipeDTO actual = null;
 		try {
-			RecipeDTO recipe1 = new RecipeDTO(1, "parmaskinke");
-			recipe.createRecipe(recipe1);
-			RecipeDTO expected = new RecipeDTO(1, "parmaskinke");
-			RecipeDTO actual = recipe.getRecipe(1);
-			assertEquals(expected, actual);
-		} catch (DALException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			recipe.createRecipe(expected);
+			actual = recipe.getRecipe(1);
 		}
+		catch (DALException e) {	System.out.println(e.getMessage());}
+		assertEquals(expected, actual);
 	}
-
 }
