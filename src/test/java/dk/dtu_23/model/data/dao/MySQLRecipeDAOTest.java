@@ -17,6 +17,7 @@ import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.dao.MySQLRecipeDAO;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProductBatchCompDAO;
+import dk.dtu_23.model.RecipeCompDTO;
 import dk.dtu_23.model.RecipeDTO;
 
 public class MySQLRecipeDAOTest {
@@ -110,5 +111,18 @@ public class MySQLRecipeDAOTest {
 		}
 		catch (DALException e) {	System.out.println(e.getMessage());}
 		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * get recipe with invalid input
+	 */
+	
+	@Test
+	public void getRecipeCompWithInvalidID() {
+		String errorMsg = null;
+		try {
+			recipe.getRecipe(0);
+		} catch (DALException e) { errorMsg = e.getMessage(); }
+		assertEquals(errorMsg, "Recipe with id 0 does not exist");
 	}
 }

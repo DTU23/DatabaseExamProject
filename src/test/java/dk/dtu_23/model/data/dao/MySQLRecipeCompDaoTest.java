@@ -108,4 +108,17 @@ public class MySQLRecipeCompDaoTest {
 		assertEquals(expected, actual);
 	}
 	
+	/**
+	 * get recipe comp with invalid input
+	 */
+	
+	@Test
+	public void getRecipeCompWithInvalidID() {
+		String errorMsg = null;
+		try {
+			recipeComp.getRecipeComp(0, 1);
+		} catch (DALException e) { errorMsg = e.getMessage(); }
+		assertEquals(errorMsg, "RecipeComp with recipeid 0 and produceid 1 does not exist");
+	}
+	
 }
