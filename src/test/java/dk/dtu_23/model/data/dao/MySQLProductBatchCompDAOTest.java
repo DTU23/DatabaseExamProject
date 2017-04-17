@@ -15,7 +15,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
 public class MySQLProductBatchCompDAOTest {
-    MySQLProductBatchCompDAO pbcdao;
+    private MySQLProductBatchCompDAO pbcdao;
     @Before
     public void setUp() throws Exception {
         new Connector();
@@ -29,7 +29,7 @@ public class MySQLProductBatchCompDAOTest {
 
     @Test
     public void getProductBatchComp() throws Exception {
-        ProductBatchCompDTO pbc1 = null;
+        ProductBatchCompDTO pbc1;
         pbc1 = pbcdao.getProductBatchComp(1);
         assertThat(pbc1, is(not(equalTo(null))));
     }

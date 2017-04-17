@@ -27,14 +27,14 @@ public class MySQLProductBatchDAOTest {
 
     @Test
     public void getProductBatch() throws Exception {
-        ProductBatchDTO pb1 = null;
+        ProductBatchDTO pb1;
         pb1 = pbdao.getProductBatch(1);
         assertThat(pb1, is(equalTo(new ProductBatchDTO(1, 0, 1, "margherita"))));
     }
 
     @Test
     public void getProductBatchList() throws Exception {
-        List<ProductBatchDTO> list = null;
+        List<ProductBatchDTO> list;
         list = pbdao.getProductBatchList();
         assertThat(list, is(not(equalTo(null))));
     }
@@ -70,8 +70,8 @@ public class MySQLProductBatchDAOTest {
     public void updateProductBatch() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
         ProductBatchDTO editedStatus = new ProductBatchDTO(1, 1, 1, "margherita");
-        ProductBatchDTO PbCheckBeforeEdit = null;
-        ProductBatchDTO PbCheckAfterEdit = null;
+        ProductBatchDTO PbCheckBeforeEdit;
+        ProductBatchDTO PbCheckAfterEdit;
 
         pbdao.createProductBatch(newPb);
         PbCheckBeforeEdit = pbdao.getProductBatch(1);
