@@ -45,7 +45,7 @@ public class MySQLOperatorDAOTest {
 		try {
 			opr3 = opr.getOperator(3);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(opr3, equalTo(oprCheck));
+		assertThat(opr3, is(equalTo(oprCheck)));
 	}
 
 	/**
