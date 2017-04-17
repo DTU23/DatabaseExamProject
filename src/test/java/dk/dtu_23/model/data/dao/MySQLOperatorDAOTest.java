@@ -1,16 +1,16 @@
 package dk.dtu_23.model.data.dao;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.OperatorDTO;
 import dk.dtu_23.model.data.interfaces.DALException;
 
@@ -20,6 +20,11 @@ public class MySQLOperatorDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
+		try { new Connector(); } 
+		catch (InstantiationException e) { e.printStackTrace(); }
+		catch (IllegalAccessException e) { e.printStackTrace(); }
+		catch (ClassNotFoundException e) { e.printStackTrace(); }
+		catch (SQLException e) { e.printStackTrace(); }
 		//TODO mangler noget reset database
 		opr = new MySQLOperatorDAO();
 	}
@@ -36,10 +41,11 @@ public class MySQLOperatorDAOTest {
 	@Test
 	public void testGetOperatorByID() {
 		OperatorDTO opr3 = null;
+		OperatorDTO oprCheck = new OperatorDTO(3, "Luigi C", "LC", "090990-9009", "jEfm5aQ", false, "Operator");
 		try {
 			opr3 = opr.getOperator(3);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(opr3, is(equalTo(new OperatorDTO(3, "Luigi C", "LC", "090990-9009", "jEfm5aQ", false, "Operator"))));
+		assertThat(opr3, equalTo(oprCheck));
 	}
 
 	/**
@@ -59,7 +65,7 @@ public class MySQLOperatorDAOTest {
 	 */
 	@Test
 	public void testCreateOperator() {
-		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou", false, null);
+		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou", false, "Operator");
 		OperatorDTO OprCheck = null;
 		try {
 			opr.createOperator(newOpr);
@@ -201,6 +207,6 @@ public class MySQLOperatorDAOTest {
 		try {
 			list = opr.getOperatorList();
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(list, is(not(equalTo(null))));
+		assertThat(list, notNullValue());
 	}
 }
