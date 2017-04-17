@@ -71,18 +71,37 @@ public class MySQLProductBatchDAOTest {
     public void updateProductBatchStatus() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
         ProductBatchDTO editedStatus = new ProductBatchDTO(1, 1, 1, "margherita");
+
         ProductBatchDTO PbCheckBeforeEdit;
         ProductBatchDTO PbCheckAfterEdit;
 
-        pbdao.createProductBatch(newPb);
         PbCheckBeforeEdit = pbdao.getProductBatch(1);
-
         assertThat(newPb, is(equalTo(PbCheckBeforeEdit)));
+
         pbdao.updateProductBatch(editedStatus);
 
         PbCheckAfterEdit = pbdao.getProductBatch(1);
 
         assertThat(editedStatus, is(equalTo(PbCheckAfterEdit)));
         assertThat(PbCheckBeforeEdit, is(not(equalTo(PbCheckAfterEdit))));
+    }
+
+    @Test(expected = DALException.class)
+    public void updateProductBatchWithInvalidStatus() throws Exception {
+        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
+        ProductBatchDTO editedInvalidStatus = new ProductBatchDTO(1, -1, 1, "margherita");
+
+        ProductBatchDTO PbCheckBeforeEdit;
+        ProductBatchDTO PbCheckAfterEdit;
+
+        PbCheckBeforeEdit = pbdao.getProductBatch(1);
+        assertThat(newPb, is(equalTo(PbCheckBeforeEdit)));
+
+        pbdao.updateProductBatch(editedInvalidStatus);
+
+        PbCheckAfterEdit = pbdao.getProductBatch(1);
+
+        assertThat(editedInvalidStatus, is(not(equalTo(PbCheckAfterEdit))));
+        assertThat(PbCheckBeforeEdit, is(equalTo(PbCheckAfterEdit)));
     }
 }
