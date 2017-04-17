@@ -2,6 +2,7 @@ package dk.dtu_23.model.data.dao;
 
 import dk.dtu_23.model.ProductBatchDTO;
 import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,26 +49,26 @@ public class MySQLProductBatchDAOTest {
         assertEquals(batchCountBefore, batchCountAfter-1);
     }
 
-    @Test
+    @Test(expected=DALException.class)
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(1, -1, 1, "margharita");
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
-    @Test
+    @Test(expected=DALException.class)
     public void createProductBatchWithInvalidRecipeID() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(-1, 0, -1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, -1, "margharita");
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
     @Test
-    public void updateProductBatch() throws Exception {
+    public void updateProductBatchStatus() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
         ProductBatchDTO editedStatus = new ProductBatchDTO(1, 1, 1, "margherita");
         ProductBatchDTO PbCheckBeforeEdit;
