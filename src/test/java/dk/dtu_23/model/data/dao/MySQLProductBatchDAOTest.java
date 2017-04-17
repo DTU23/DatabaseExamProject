@@ -1,7 +1,6 @@
 package dk.dtu_23.model.data.dao;
 
 import dk.dtu_23.model.ProductBatchDTO;
-import dk.dtu_23.model.RecipeDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import org.junit.After;
@@ -37,18 +36,14 @@ public class MySQLProductBatchDAOTest {
     @Test
     public void getProductBatch() throws Exception {
         ProductBatchDTO pb1 = null;
-        try {
-            pb1 = pbdao.getProductBatch(1);
-        } catch (DALException e) { System.out.println(e.getMessage()); }
+        pb1 = pbdao.getProductBatch(1);
         assertThat(pb1, is(equalTo(new ProductBatchDTO(1, 0, 1, "margherita"))));
     }
 
     @Test
     public void getProductBatchList() throws Exception {
         List<ProductBatchDTO> list = null;
-        try {
-            list = pbdao.getProductBatchList();
-        } catch (DALException e) { System.out.println(e.getMessage()); }
+        list = pbdao.getProductBatchList();
         assertThat(list, is(not(equalTo(null))));
     }
 
@@ -62,26 +57,39 @@ public class MySQLProductBatchDAOTest {
     }
 
     @Test
+    public void createProductBatchWithInvalidStatus() throws Exception {
+        int batchCountBefore = pbdao.getProductBatchList().size();
+        ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1, "margharita");
+        pbdao.createProductBatch(newPb);
+        int batchCountAfter = pbdao.getProductBatchList().size();
+        assertEquals(batchCountBefore, batchCountAfter);
+    }
+
+    @Test
+    public void createProductBatchWithInvalidRecipeID() throws Exception {
+        int batchCountBefore = pbdao.getProductBatchList().size();
+        ProductBatchDTO newPb = new ProductBatchDTO(-1, 0, -1, "margharita");
+        pbdao.createProductBatch(newPb);
+        int batchCountAfter = pbdao.getProductBatchList().size();
+        assertEquals(batchCountBefore, batchCountAfter);
+    }
+
+    @Test
     public void updateProductBatch() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
         ProductBatchDTO editedStatus = new ProductBatchDTO(1, 1, 1, "margherita");
         ProductBatchDTO PbCheckBeforeEdit = null;
         ProductBatchDTO PbCheckAfterEdit = null;
-        try {
-            pbdao.createProductBatch(newPb);
-        } catch (DALException e) { System.out.println(e.getMessage()); }
-        try {
-            PbCheckBeforeEdit = pbdao.getProductBatch(1);
-        } catch (DALException e) { System.out.println(e.getMessage()); }
+
+        pbdao.createProductBatch(newPb);
+        PbCheckBeforeEdit = pbdao.getProductBatch(1);
+
         assertThat(newPb, is(equalTo(PbCheckBeforeEdit)));
-        try {
-            pbdao.updateProductBatch(editedStatus);
-        } catch (DALException e) { System.out.println(e.getMessage()); }
-        try {
-            PbCheckAfterEdit = pbdao.getProductBatch(1);
-        } catch (DALException e) { System.out.println(e.getMessage()); }
+        pbdao.updateProductBatch(editedStatus);
+
+        PbCheckAfterEdit = pbdao.getProductBatch(1);
+
         assertThat(editedStatus, is(equalTo(PbCheckAfterEdit)));
         assertThat(PbCheckBeforeEdit, is(not(equalTo(PbCheckAfterEdit))));
     }
-
 }
