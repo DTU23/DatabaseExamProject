@@ -2,14 +2,10 @@ package dk.dtu_23.model.data.dao;
 
 import dk.dtu_23.model.ProductBatchDTO;
 import dk.dtu_23.model.data.connector.Connector;
-import dk.dtu_23.model.data.interfaces.DALException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.sql.SQLException;
 import java.util.List;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
@@ -20,11 +16,7 @@ public class MySQLProductBatchDAOTest {
     private MySQLProductBatchDAO pbdao;
     @Before
     public void setUp() throws Exception {
-        try { new Connector(); }
-        catch (InstantiationException e) { e.printStackTrace(); }
-        catch (IllegalAccessException e) { e.printStackTrace(); }
-        catch (ClassNotFoundException e) { e.printStackTrace(); }
-        catch (SQLException e) { e.printStackTrace(); }
+        new Connector();
         pbdao = new MySQLProductBatchDAO();
     }
 
