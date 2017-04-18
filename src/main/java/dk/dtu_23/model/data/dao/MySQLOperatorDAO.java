@@ -21,9 +21,9 @@ public class MySQLOperatorDAO implements OperatorDAO {
 		catch (SQLException e) {throw new DALException(e); }
 	}
 
-	public void createOperator(OperatorDTO opr) throws DALException {		
-		Connector.doUpdate("CALL create_operator(" + opr.getOprId() + "," + opr.getOprName() + "," + opr.getIni() + "," + 
-				opr.getCpr() + "," + opr.getPassword() + "," + opr.getAdmin() + "," + opr.getRole() + ");");
+	public void createOperator(OperatorDTO opr) throws DALException {
+		Connector.doUpdate("CALL create_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
+				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');");
 	}
 
 	public void updateOperator(OperatorDTO opr) throws DALException {

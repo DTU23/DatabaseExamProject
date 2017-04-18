@@ -35,7 +35,7 @@ public class Connector
 	private static Statement stm;
 	
 	public Connector(String server, int port, String database, String username, String password) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		conn = connectToDatabase("jdbc:mysql://"+server+":"+port+"/"+database, username, password);
+		conn = connectToDatabase("jdbc:mysql://"+server+":"+port+"/"+database+"?verifyServerCertificate=false&useSSL=true", username, password);
 		stm	= conn.createStatement();
 	}
 	
@@ -57,6 +57,8 @@ public class Connector
 		try { return stm.executeUpdate(cmd); }
 		catch (SQLException e) { throw new DALException(e); }
 	}
-	
-	
+	public static int resetData() throws DALException{
+		try { return stm.executeUpdate("CALL reset_data();"); }
+		catch (SQLException e) { throw new DALException(e); }
+	}
 }

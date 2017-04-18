@@ -1,45 +1,138 @@
 package dk.dtu_23.model.data.dao;
 
-import junit.framework.Assert;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import dk.dtu_23.model.ProduceDTO;
+import dk.dtu_23.model.ProduceOverviewDTO;
+import dk.dtu_23.model.data.connector.Connector;
 
 public class MySQLProduceDAOTest {
-    @Before
-    public void setUp() throws Exception {
 
-    }
+	MySQLProduceDAO produce;
 
-    @After
-    public void tearDown() throws Exception {
-    }
+	@Before
+	public void setUp() throws Exception {
+		new Connector();
+		produce = new MySQLProduceDAO();
+	}
 
-    @Test
-    public void getProduce() throws Exception {
-        assertEquals(1,1);
-    }
+	@After
+	public void tearDown() throws Exception{
+		produce = null;
+	}
 
-    @Test
-    public void getProduceList() throws Exception {
-        assertEquals(1,1);
-    }
+	/**
+	 * Positive test. Get any produce by ID.
+	 */
+	@Test
+	public void testGetProduceByID() throws Exception {
+		ProduceDTO actual = null;
+		ProduceDTO expected = new ProduceDTO(2, "tomat", "Knoor");
+		// Get produce by ID from DB
+		actual = produce.getProduce(2);
+		assertThat(actual.toString(), is(expected.toString()));
+	}
+	
+	/**
+	 * Negative test. Try to get produce with non-existing ID.
+	 */
+	@Test
+	public void testGetProduceByIDThatDoesntExist() throws Exception {
+		ProduceDTO actual = null;
+		// Get produce by ID from DB
+		actual = produce.getProduce(10);
+		assertThat(actual, nullValue());
+	}
 
-    @Test
-    public void createProduce() throws Exception {
-        assertEquals(1,1);
-    }
+	/**
+	 * Positive test. Get all produces from the produce list.
+	 */
+	@Test
+	public void testGetProduceList() throws Exception {
+		List<ProduceDTO> produceList = null;
+		// Last row in our table, produce
+		ProduceDTO produceDTO = new ProduceDTO(7, "champignon", "Igloo Frostvarer");
+		// Get whole table, produce, from DB
+		produceList = produce.getProduceList();
 
-    @Test
-    public void updateProduce() throws Exception {
-        assertEquals(1,1);
-    }
+		// Print out the produce list to console
+		System.out.println("testGetProduceList(): ");
+		for(int i = 0; i < produceList.size(); i++)
+			System.out.println(produceList.get(i));
+		System.out.println();
+		
+		assertThat(produceList, notNullValue());
+		assertThat(produceList.get(6).toString(), is(produceDTO.toString()));
+	}
 
-    @Test
-    public void getProduceOverview() throws Exception {
-        assertEquals(1,1);
-    }
+	/**
+	 * Positive test. Create a produce.
+	 */
+	@Test
+	public void testCreateProduce() throws Exception {
+		ProduceDTO expected = new ProduceDTO(8, "smør", "Kærgården");
+		ProduceDTO actual = null;
+
+		produce.createProduce(expected);
+		actual = produce.getProduce(8);
+
+		assertThat(actual.toString(), is(expected.toString()));
+	}
+
+	/**
+	 * Negative test. Try to overwrite already created produce
+	 */
+	@Test
+	public void testCreateProduceWithAlreadyUsedID() throws Exception {
+		ProduceDTO newProduce = new ProduceDTO(1, "vand", "Aqua");
+		ProduceDTO actual = null;
+
+		produce.createProduce(newProduce);
+		actual = produce.getProduce(1);
+
+		assertThat(actual.toString(), is(not(newProduce.toString())));
+	}
+
+	/**
+	 * Positive test. Update produce
+	 */
+	@Test
+	public void testUpdateProduce() throws Exception {
+		ProduceDTO expected = new ProduceDTO(4, "tomat", "Kims");
+		ProduceDTO actual = null;
+
+		produce.updateProduce(expected);
+		actual = produce.getProduce(4);
+		
+		assertThat(actual.toString(), is(expected.toString()));
+	}
+
+	/**
+	 * Positive test. Get produce overview
+	 */
+	@Test
+	public void testGetProduceOverview() throws Exception {
+		List<ProduceOverviewDTO> produceOverview = null;
+		// First row in our view, produce_overview
+		ProduceOverviewDTO produceOverviewDTO = new ProduceOverviewDTO(7, "champignon", 100);
+
+		produceOverview = produce.getProduceOverview();
+
+		// Print out the produce overview to console
+		System.out.println("testGetProduceOverview(): ");
+		for(int i = 0; i < produceOverview.size(); i++)
+			System.out.println(produceOverview.get(i));
+		System.out.println();
+		
+		assertThat(produceOverview, notNullValue());
+		assertThat(produceOverview.get(0).toString(), is(produceOverviewDTO.toString()));
+	}
 
 }

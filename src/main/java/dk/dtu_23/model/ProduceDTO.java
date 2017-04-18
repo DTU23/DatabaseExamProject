@@ -2,7 +2,7 @@ package dk.dtu_23.model;
 
 /**
  * Produce Data Objekt
- * 
+ *
  * @author mn/sh/tb
  * @version 1.2
  */
@@ -10,26 +10,38 @@ package dk.dtu_23.model;
 public class ProduceDTO
 {
     /** i omraadet 1-99999999 vaelges af brugerne */
-    int produceId;                     
+    private int produceId;
     /** min. 2 max. 20 karakterer */
-    String produceNavn;                
+    private String produceName;
     /** min. 2 max. 20 karakterer */
-    String leverandoer;         
-	
-	public ProduceDTO(int produceId, String produceNavn, String leverandoer)
-	{
-		this.produceId = produceId;
-		this.produceNavn = produceNavn;
-		this.leverandoer = leverandoer;
-	}
-	
-    public int getProduceId() { return produceId; }
-    public void setProduceId(int produceId) { this.produceId = produceId; }
-    public String getProduceName() { return produceNavn; }
-    public void setProduceName(String produceNavn) { this.produceNavn = produceNavn; }
-    public String getSupplier() { return leverandoer; }
-    public void setLeverandoer(String leverandoer) { this.leverandoer = leverandoer; }
-    public String toString() { 
-		return produceId + "\t" + produceNavn +"\t" + leverandoer; 
-	}
+    private String supplier;
+
+    public ProduceDTO(int produceId, String produceName, String supplier)
+    {
+        this.produceId = produceId;
+        this.produceName = produceName;
+        this.supplier = supplier;
+    }
+
+    public int getProduceId() {
+        return produceId;
+    }
+    public void setProduceId(int produceId) {
+        this.produceId = produceId;
+    }
+    public String getProduceName() {
+        return this.produceName;
+    }
+    public void setProduceName(String produceName) {
+        this.produceName = produceName;
+    }
+    public String getSupplier() {
+        return this.supplier;
+    }
+    public void setSupplier(String amount) {
+        this.supplier = amount;
+    }
+    public String toString() {
+        return this.produceId + "\t" + this.produceName +"\t" + this.supplier;
+    }
 }

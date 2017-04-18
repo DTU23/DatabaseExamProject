@@ -1,9 +1,11 @@
 package dk.dtu_23.model.data.dao;
 
-import dk.dtu_23.model.ProduceDTO;
+
+import dk.dtu_23.model.ProduceOverviewDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProduceDAO;
+import dk.dtu_23.model.ProduceDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +18,7 @@ public class MySQLProduceDAO implements ProduceDAO {
 	public ProduceDTO getProduce(int raavareId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM produce WHERE "+raavareId+"=produce_id;");
 		try{
+			rs.next();
 			return new ProduceDTO(rs.getInt("produce_id"), rs.getString("produce_name"), rs.getString("supplier"));
 		}catch (SQLException e){ throw new DALException(e); }
 	}
@@ -41,11 +44,29 @@ public class MySQLProduceDAO implements ProduceDAO {
 
 	@Override
 	public void createProduce(ProduceDTO produce) throws DALException {
-		Connector.doQuery("INSERT INTO produce(produce_id, produce_name, supplier) VALUES("+produce.getProduceId()+", "+produce.getProduceName()+" ,"+produce.getSupplier()+");");
+		Connector.doQuery("");
 	}
 
 	@Override
 	public void updateProduce(ProduceDTO produce) throws DALException {
-		Connector.doQuery("UPDATE produce SET produce_name="+produce.getProduceName()+", supplier="+produce.getSupplier()+"WHERE produce_id="+produce.getProduceId()+";");
+		Connector.doQuery("");
+	}
+
+	public List<ProduceOverviewDTO> getProduceOverview() throws DALException{
+		List<ProduceOverviewDTO> list = new ArrayList<ProduceOverviewDTO>();
+		ResultSet rs = Connector.doQuery("SELECT * FROM produce_overview;");
+		try
+		{
+			while (rs.next())
+			{
+				list.add(new ProduceOverviewDTO(
+						rs.getInt("produce_id"),
+						rs.getString("produce_name"),
+						rs.getDouble("amount")
+				));
+			}
+		}
+		catch (SQLException e) { throw new DALException(e); }
+		return list;
 	}
 }
