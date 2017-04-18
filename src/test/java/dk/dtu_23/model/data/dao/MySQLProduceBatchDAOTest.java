@@ -1,10 +1,7 @@
 package dk.dtu_23.model.data.dao;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -37,16 +34,11 @@ public class MySQLProduceBatchDAOTest {
 	 */
 	@Test
 	public void testGetProduceBatchByID() throws Exception {
-		ProduceBatchDTO expected = new ProduceBatchDTO(1, "dej", "Wawelka", 1000);
+		ProduceBatchDTO expected = new ProduceBatchDTO(1, "dej", "Wawelka", 800);
 		ProduceBatchDTO actual = null;
-
-		try {
-			actual = produceBatch.getProduceBatch(1);
-		} catch (DALException e) {
-			System.out.println(e.getMessage());
-		}
-
-		assertThat(actual, is(expected));
+		// Get produce batch from DB specified by ID
+		actual = produceBatch.getProduceBatch(1);
+		assertThat(actual.toString(), is(expected.toString()));
 	}
 
 	/**
@@ -55,18 +47,8 @@ public class MySQLProduceBatchDAOTest {
 	@Test
 	public void testGetProduceBatchByIDThatDoesntExist() throws Exception{
 		ProduceBatchDTO actual = null;
-		String output = null;
+		actual = produceBatch.getProduceBatch(17);
 
-		try {
-			actual = produceBatch.getProduceBatch(17);
-		} catch (DALException e) {
-			e.printStackTrace();
-			output = e.getMessage();
-			System.out.println(output);
-		}
-
-		assertThat(output, notNullValue());
-		assertThat(output, is("Produce batch with id 17 does not exist"));
 		assertThat(actual, nullValue());
 	}
 
@@ -81,12 +63,14 @@ public class MySQLProduceBatchDAOTest {
 
 		pbList = produceBatch.getProduceBatchList();
 
+		System.out.println("testGetProduceBatchList(): ");
 		// Print out the produce batch list to console
 		for(int i = 0; i < pbList.size(); i++)
 			System.out.println(pbList.get(i));
+		System.out.println();
 
 		assertThat(pbList, notNullValue());
-		assertThat(pbList.get(1), is(produceBatchDTO));
+		assertThat(pbList.get(1).toString(), is(produceBatchDTO.toString()));
 	}
 
 	/**
@@ -96,13 +80,14 @@ public class MySQLProduceBatchDAOTest {
 	public void testCreateProduceBatch() throws Exception{
 		double amount = 500;
 		ProduceDTO produceDTO = new ProduceDTO(8, "chips", "Kims");
+		
 		ProduceBatchDTO expected = new ProduceBatchDTO(8, "chips", "Kims", amount);
 		ProduceBatchDTO actual = null;
 
 		produceBatch.createProduceBatch(produceDTO, amount);
 		actual = produceBatch.getProduceBatch(8);
 
-		assertThat(actual, is(expected));
+		assertThat(actual.toString(), is(expected.toString()));
 	}
 
 	/**
@@ -118,8 +103,7 @@ public class MySQLProduceBatchDAOTest {
 		produceBatch.createProduceBatch(produceDTO, amount);
 		actual = produceBatch.getProduceBatch(5);
 
-		assertThat(actual, is(not(expected)));
-		//        assertThat(actual.getProduceName(), is(not("chips")));
+		assertThat(actual.toString(), is(not(expected.toString())));
 	}
 
 	/**
@@ -134,7 +118,7 @@ public class MySQLProduceBatchDAOTest {
 		produceBatch.updateProduceBatch(pbDTO, amount);
 		actual = produceBatch.getProduceBatch(1);
 
-		assertThat(actual, is(not(pbDTO)));
+		assertThat(actual.toString(), is(not(pbDTO.toString())));
 		assertThat(actual.getAmount(), is(amount));
 	}
 
@@ -147,11 +131,10 @@ public class MySQLProduceBatchDAOTest {
 		ProduceBatchDTO actual = null;
 		double amount = 400;
 
-
 		produceBatch.updateProduceBatch(pbDTO, amount);
 		actual = produceBatch.getProduceBatch(12);
 
-		assertThat(actual, is(not(pbDTO)));
+		assertThat(actual.toString(), is(not(pbDTO.toString())));
 	}
 
 }
