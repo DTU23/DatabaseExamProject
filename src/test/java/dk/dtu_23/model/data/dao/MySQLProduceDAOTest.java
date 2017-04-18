@@ -12,6 +12,7 @@ import org.junit.Test;
 import dk.dtu_23.model.ProduceDTO;
 import dk.dtu_23.model.ProduceOverviewDTO;
 import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
 
 public class MySQLProduceDAOTest {
 
@@ -84,20 +85,6 @@ public class MySQLProduceDAOTest {
 		actual = produce.getProduce(8);
 
 		assertThat(actual.toString(), is(expected.toString()));
-	}
-
-	/**
-	 * Negative test. Try to overwrite already created produce
-	 */
-	@Test
-	public void testCreateProduceWithAlreadyUsedID() throws Exception {
-		ProduceDTO newProduce = new ProduceDTO(1, "vand", "Aqua");
-		ProduceDTO actual = null;
-
-		produce.createProduce(newProduce);
-		actual = produce.getProduce(1);
-
-		assertThat(actual.toString(), is(not(newProduce.toString())));
 	}
 
 	/**
