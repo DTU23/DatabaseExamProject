@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 	@Override
-	public ProductBatchCompDTO getProductBatchComp(int pbId) throws DALException {
-		ResultSet rs = Connector.doQuery("SELECT * from productbatchcomponent WHERE pb_id="+pbId+";");
+	public ProductBatchCompDTO getProductBatchComp(int pbId, int rbId) throws DALException {
+		ResultSet rs = Connector.doQuery("SELECT * from productbatchcomponent WHERE pb_id="+pbId+" AND rb_id="+rbId+";");
 		try {
 			if (!rs.first()) throw new DALException("Product batch with id " + pbId + " not found!");
 			return new ProductBatchCompDTO (
@@ -37,9 +37,9 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 	}
 
 	@Override
-	public List<ProductBatchCompDTO> getProductBatchCompList() throws DALException {
+	public List<ProductBatchCompDTO> getProductBatchCompList(int pbId) throws DALException {
 		List<ProductBatchCompDTO> list = new ArrayList<ProductBatchCompDTO>();
-		ResultSet rs = Connector.doQuery("SELECT * productbatchcomponent;");
+		ResultSet rs = Connector.doQuery("SELECT * productbatchcomponent WHERE pb_id="+pbId+";");
 		try
 		{
 			while (rs.next())

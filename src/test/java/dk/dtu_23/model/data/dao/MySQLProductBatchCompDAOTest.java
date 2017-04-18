@@ -23,12 +23,12 @@ public class MySQLProductBatchCompDAOTest {
         new Connector();
         pbcdao = new MySQLProductBatchCompDAO();
         pbdao = new MySQLProductBatchDAO();
-
     }
 
     @After
     public void tearDown() throws Exception {
         pbcdao = null;
+        Connector.resetData();
     }
 
     /**
@@ -37,9 +37,10 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test
     public void getProductBatchComp() throws Exception {
-        List<ProductBatchCompDTO> pbc1;
-        pbc1 = pbcdao.getProductBatchComp(1);
-        assertTrue(pbc1.size() > 0);
+        ProductBatchCompDTO pbc1;
+        ProductBatchCompDTO expected = new ProductBatchCompDTO(1, 1, 0.5, 10.5, 1);
+        pbc1 = pbcdao.getProductBatchComp(1, 1);
+        assertThat(pbc1, is(equalTo(expected)));
     }
 
     /**
@@ -48,8 +49,8 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test
     public void getProductBatchCompWithNonExistentID() throws Exception {
-        List<ProductBatchCompDTO> pbc1;
-        pbc1 = pbcdao.getProductBatchComp(-1);
+        ProductBatchCompDTO pbc1;
+        pbc1 = pbcdao.getProductBatchComp(-1, -1);
         assertThat(pbc1, nullValue());
     }
 
@@ -60,9 +61,9 @@ public class MySQLProductBatchCompDAOTest {
     @Test
     public void createProductBatchComp() throws Exception {
         int pb_id = 5;
-        int batchCountBefore = pbcdao.getProductBatchComp(pb_id).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList(pb_id).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(pb_id, 1, 10, 10, 1));
-        int batchCountAfter = pbcdao.getProductBatchComp(pb_id).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList(pb_id).size();
         assertEquals(batchCountAfter, batchCountAfter-1);
         assertThat(pbdao.getProductBatch(pb_id).getStatus(), is(not(0)));
     }
@@ -73,10 +74,10 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test
     public void createProductBatchCompWithInvalidID() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchComp(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         ProductBatchCompDTO pbc = new ProductBatchCompDTO(-1, 1, 10, 10, 1);
         pbcdao.createProductBatchComp(pbc);
-        int batchCountAfter = pbcdao.getProductBatchComp(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
@@ -86,9 +87,9 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidNetto() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchComp(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, 10, -10, 1));
-        int batchCountAfter = pbcdao.getProductBatchComp(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
@@ -98,9 +99,9 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidTara() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchComp(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, -10, 10, 1));
-        int batchCountAfter = pbcdao.getProductBatchComp(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
@@ -111,7 +112,7 @@ public class MySQLProductBatchCompDAOTest {
     @Test
     public void getProductBatchCompList() throws Exception {
         List<ProductBatchCompDTO> pbcl;
-        pbcl = pbcdao.getProductBatchCompList();
+        pbcl = pbcdao.getProductBatchCompList(1);
         assertThat(pbcl, notNullValue());
     }
 

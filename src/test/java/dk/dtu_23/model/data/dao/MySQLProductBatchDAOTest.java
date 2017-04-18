@@ -32,9 +32,10 @@ public class MySQLProductBatchDAOTest {
      */
     @Test
     public void getProductBatch() throws Exception {
-        ProductBatchDTO pb1;
+        ProductBatchDTO pb1, expected;
+        expected = new ProductBatchDTO(1, 0, 1, "margherita");
         pb1 = pbdao.getProductBatch(1);
-        assertThat(pb1, is(equalTo(new ProductBatchDTO(1, 0, 1, "margherita"))));
+        assertThat(pb1, is(equalTo(expected)));
     }
 
     /**
@@ -68,7 +69,7 @@ public class MySQLProductBatchDAOTest {
     @Test(expected=DALException.class)
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(1, -1, 1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1, "margharita");
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
