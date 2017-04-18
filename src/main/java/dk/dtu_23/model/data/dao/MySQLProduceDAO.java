@@ -18,6 +18,7 @@ public class MySQLProduceDAO implements ProduceDAO {
 	public ProduceDTO getProduce(int raavareId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM produce WHERE "+raavareId+"=produce_id;");
 		try{
+			rs.next();
 			return new ProduceDTO(rs.getInt("produce_id"), rs.getString("produce_name"), rs.getString("supplier"));
 		}catch (SQLException e){ throw new DALException(e); }
 	}

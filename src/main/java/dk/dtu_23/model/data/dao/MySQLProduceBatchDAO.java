@@ -17,6 +17,7 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 	public ProduceBatchDTO getProduceBatch(int rbId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM produce_batch_list WHERE rb_id="+rbId+";");
 		try{
+			rs.next();
 			return new ProduceBatchDTO(
 					rs.getInt("rb_id"),
 					rs.getString("produce_name"),
