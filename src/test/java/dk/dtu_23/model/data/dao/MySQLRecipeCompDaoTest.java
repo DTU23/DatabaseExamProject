@@ -1,6 +1,7 @@
 package dk.dtu_23.model.data.dao;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class MySQLRecipeCompDaoTest {
 		try {
 			actual = recipeComp.getRecipeComp(1, 1);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertEquals(expected, actual);
+		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
 	
 	/**
@@ -58,12 +59,12 @@ public class MySQLRecipeCompDaoTest {
 	 */
 	
 	@Test
-	public void getRecipeByIDThatDoesntExist() {
+	public void getRecipeCompByIDThatDoesntExist() {
 		String errorMsg = null;
 		try {
 			recipeComp.getRecipeComp(4,1);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertEquals(errorMsg, "RecipeComp with recipeid 4 and produceid 1 does not exist");
+		assertThat(errorMsg, is(equalTo("RecipeComp with recipeid 4 and produceid 1 does not exist")));
 	}
 
 	/**
@@ -71,13 +72,16 @@ public class MySQLRecipeCompDaoTest {
 	 */
 	
 	@Test
-	public void positiveGetListRecipeWithID() {
+	public void positiveGetListRecipeCompWithID() {
 		List<RecipeCompDTO> actual = null;
 		try {
 			actual = recipeComp.getRecipeCompList(1);
 			
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertTrue(actual != null);
+		assertThat(actual.get(1).getRecipeId(), nullValue());
+		assertThat(actual.get(1).getProduceId(), nullValue());
+		assertThat(actual.get(1).getNomNetto(), nullValue());
+		assertThat(actual.get(1).getTolerance(), nullValue());
 	}
 
 	/**
@@ -85,12 +89,15 @@ public class MySQLRecipeCompDaoTest {
 	 */
 	
 	@Test
-	public void positiveGetListRecipe() {
+	public void positiveGetListRecipeComp() {
 		List<RecipeCompDTO> actual = null;
 		try {
 			actual = recipeComp.getRecipeCompList();
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertTrue(actual != null);
+		assertThat(actual.get(0).getRecipeId(), nullValue());
+		assertThat(actual.get(0).getProduceId(), nullValue());
+		assertThat(actual.get(0).getNomNetto(), nullValue());
+		assertThat(actual.get(0).getTolerance(), nullValue());
 	}
 
 	/**
@@ -105,7 +112,7 @@ public class MySQLRecipeCompDaoTest {
 			recipeComp.createRecipeComp(expected);
 			actual = recipeComp.getRecipeComp(4, 1);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertEquals(expected, actual);
+		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
 	
 	/**
@@ -118,7 +125,7 @@ public class MySQLRecipeCompDaoTest {
 		try {
 			recipeComp.getRecipeComp(0, 1);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertEquals(errorMsg, "RecipeComp with recipeid 0 and produceid 1 does not exist");
+		assertEquals(errorMsg, is(equalTo("RecipeComp with recipeid 0 and produceid 1 does not exist")));
 	}
 	
 }

@@ -5,7 +5,11 @@ import static org.junit.Assert.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.*;
 
+import org.hamcrest.core.Is;
+import org.hamcrest.core.IsEqual;
+import org.hamcrest.core.IsSame;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,6 +21,7 @@ import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.dao.MySQLRecipeDAO;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.ProductBatchCompDAO;
+import junit.framework.Assert;
 import dk.dtu_23.model.RecipeCompDTO;
 import dk.dtu_23.model.RecipeDTO;
 
@@ -52,7 +57,7 @@ public class MySQLRecipeDAOTest {
 		try {
 			actual = recipe.getRecipe(3);	
 		} catch (DALException e) {	System.out.println(e.getMessage());  }
-		assertEquals(expected, actual);
+		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
 
 	/**
@@ -65,7 +70,7 @@ public class MySQLRecipeDAOTest {
 		try {
 			recipe.getRecipe(5);
 		} catch (DALException e) {	errorMsg = e.getMessage();	}
-		assertEquals(errorMsg, "Recipe with id 5 does not exist");
+		assertThat(errorMsg, is(equalTo("Recipe with id 5 does not exist")));
 
 	}
 
@@ -79,7 +84,8 @@ public class MySQLRecipeDAOTest {
 		try {
 			actual = recipe.getRecipeList();
 		} catch (DALException e) {	System.out.println(e.getMessage());}
-		assertTrue(actual != null);
+		assertThat(actual.get(0).getRecipeId(), nullValue());
+		assertThat(actual.get(0).getRecipeName(), nullValue());
 
 	}
 
@@ -94,9 +100,9 @@ public class MySQLRecipeDAOTest {
 			recipe.createRecipe(expected);
 			actual = recipe.getRecipe(4);
 		} catch (DALException e) {	System.out.println(e.getMessage());}
-		assertEquals(expected, actual);
+		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
-
+	
 	/**
 	 * negative test for create recipe. 
 	 * Auto-generates an ID so cant create on existing.  
@@ -109,8 +115,8 @@ public class MySQLRecipeDAOTest {
 			recipe.createRecipe(expected);
 			actual = recipe.getRecipe(1);
 		}
-		catch (DALException e) {	System.out.println(e.getMessage());}
-		assertEquals(expected, actual);
+		catch (DALException e) {System.out.println(e.getMessage());}
+		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
 	
 	/**
@@ -118,11 +124,12 @@ public class MySQLRecipeDAOTest {
 	 */
 	
 	@Test
-	public void getRecipeCompWithInvalidID() {
+	public void getRecipeWithInvalidID() {
 		String errorMsg = null;
 		try {
 			recipe.getRecipe(0);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertEquals(errorMsg, "Recipe with id 0 does not exist");
+		assertThat(errorMsg, is(equalTo("Recipe with id 0 does not exist")));
 	}
+		
 }
