@@ -26,6 +26,10 @@ public class MySQLProductBatchDAOTest {
         pbdao = null;
     }
 
+    /**
+     * Positive test for getProductBatch
+     * @throws Exception
+     */
     @Test
     public void getProductBatch() throws Exception {
         ProductBatchDTO pb1;
@@ -33,6 +37,10 @@ public class MySQLProductBatchDAOTest {
         assertThat(pb1, is(equalTo(new ProductBatchDTO(1, 0, 1, "margherita"))));
     }
 
+    /**
+     * Positive test for getProductBatchList
+     * @throws Exception
+     */
     @Test
     public void getProductBatchList() throws Exception {
         List<ProductBatchDTO> list;
@@ -40,6 +48,10 @@ public class MySQLProductBatchDAOTest {
         assertThat(list, is(not(equalTo(null))));
     }
 
+    /**
+     * Positive test for createProductBatch
+     * @throws Exception
+     */
     @Test
     public void createProductBatch() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
@@ -49,6 +61,10 @@ public class MySQLProductBatchDAOTest {
         assertEquals(batchCountBefore, batchCountAfter-1);
     }
 
+    /**
+     * Negative test for createProductBatch
+     * @throws Exception
+     */
     @Test(expected=DALException.class)
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
@@ -58,6 +74,10 @@ public class MySQLProductBatchDAOTest {
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
+    /**
+     * Negative test for createProductBatch
+     * @throws Exception
+     */
     @Test(expected=DALException.class)
     public void createProductBatchWithInvalidRecipeID() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
@@ -67,6 +87,10 @@ public class MySQLProductBatchDAOTest {
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
+    /**
+     * Positive test for updateProductBatch
+     * @throws Exception
+     */
     @Test
     public void updateProductBatchStatus() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
@@ -86,6 +110,10 @@ public class MySQLProductBatchDAOTest {
         assertThat(PbCheckBeforeEdit, is(not(equalTo(PbCheckAfterEdit))));
     }
 
+    /**
+     * Negative test for updateProductBatch
+     * @throws Exception
+     */
     @Test(expected = DALException.class)
     public void updateProductBatchWithInvalidStatus() throws Exception {
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");

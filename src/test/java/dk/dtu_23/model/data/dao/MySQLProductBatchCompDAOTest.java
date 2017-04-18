@@ -31,6 +31,10 @@ public class MySQLProductBatchCompDAOTest {
         pbcdao = null;
     }
 
+    /**
+     * Positive test for getProductBatchComp
+     * @throws Exception
+     */
     @Test
     public void getProductBatchComp() throws Exception {
         List<ProductBatchCompDTO> pbc1;
@@ -38,6 +42,10 @@ public class MySQLProductBatchCompDAOTest {
         assertTrue(pbc1.size() > 0);
     }
 
+    /**
+     * Negative test for getProductBatchComp
+     * @throws Exception
+     */
     @Test
     public void getProductBatchCompWithNonExistentID() throws Exception {
         List<ProductBatchCompDTO> pbc1;
@@ -45,6 +53,10 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbc1, nullValue());
     }
 
+    /**
+     * Positive test for createProductBatchComp
+     * @throws Exception
+     */
     @Test
     public void createProductBatchComp() throws Exception {
         int pb_id = 5;
@@ -55,6 +67,10 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbdao.getProductBatch(pb_id).getStatus(), is(not(0)));
     }
 
+    /**
+     * Negative test for createProductBatchComp
+     * @throws Exception
+     */
     @Test
     public void createProductBatchCompWithInvalidID() throws Exception {
         int batchCountBefore = pbcdao.getProductBatchComp(1).size();
@@ -64,7 +80,10 @@ public class MySQLProductBatchCompDAOTest {
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
-
+    /**
+     * Negative test for createProductBatchComp
+     * @throws Exception
+     */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidNetto() throws Exception {
         int batchCountBefore = pbcdao.getProductBatchComp(1).size();
@@ -73,6 +92,10 @@ public class MySQLProductBatchCompDAOTest {
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
+    /**
+     * Negative test for createProductBatchComp
+     * @throws Exception
+     */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidTara() throws Exception {
         int batchCountBefore = pbcdao.getProductBatchComp(1).size();
@@ -81,6 +104,10 @@ public class MySQLProductBatchCompDAOTest {
         assertEquals(batchCountAfter, batchCountAfter);
     }
 
+    /**
+     * Positive test for getProductBatchCompList
+     * @throws Exception
+     */
     @Test
     public void getProductBatchCompList() throws Exception {
         List<ProductBatchCompDTO> pbcl;
@@ -88,6 +115,10 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbcl, notNullValue());
     }
 
+    /**
+     * Positive test for getProductBatchCompOverview
+     * @throws Exception
+     */
     @Test
     public void getProductBatchCompOverview() throws Exception {
         List<ProductBatchCompOverviewDTO> pbco;
@@ -95,6 +126,10 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbco, notNullValue());
     }
 
+    /**
+     * Positive test for getSupplierDetailById
+     * @throws Exception
+     */
     @Test
     public void getSupplierDetailById() throws Exception {
         List<ProductBatchCompSupplierDetailsDTO> pbcsd;
@@ -102,6 +137,10 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbcsd, notNullValue());
     }
 
+    /**
+     * Negative test for getSupplierDetailById
+     * @throws Exception
+     */
     @Test(expected = DALException.class)
     public void getSupplierDetailByNonExistentId() throws Exception {
         List<ProductBatchCompSupplierDetailsDTO> pbcsd;
