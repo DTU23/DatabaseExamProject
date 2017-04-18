@@ -169,7 +169,6 @@ public class MySQLOperatorDAOTest {
 		assertThat(Opr5AfterEdit, notNullValue());
 		assertThat(Opr6AfterEdit, nullValue());
 		assertThat(Opr5AfterEdit.toString(), is(equalTo(OprCheckBeforeEdit.toString())));
-		assertThat(Opr6AfterEdit.toString(), is(not(equalTo(editedID.toString()))));
 		assertThat(errorMsg, notNullValue());
 	}
 
