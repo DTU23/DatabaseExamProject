@@ -1,6 +1,7 @@
 package dk.dtu_23.model.data.dao;
 
 import dk.dtu_23.model.OperatorDTO;
+import dk.dtu_23.model.OperatorNoPWDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.data.interfaces.OperatorDAO;
@@ -27,18 +28,18 @@ public class MySQLOperatorDAO implements OperatorDAO {
 	}
 
 	public void updateOperator(OperatorDTO opr) throws DALException {
-		Connector.doUpdate("CALL update_operator(" + opr.getOprId() + "," + opr.getOprName() + "," + opr.getIni() + "," + 
-				opr.getCpr() + "," + opr.getPassword() + "," + opr.getAdmin() + "," + opr.getRole() + ");");
+		Connector.doUpdate("CALL update_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
+				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');");
 	}
 
-	public List<OperatorDTO> getOperatorList() throws DALException {
-		List<OperatorDTO> list = new ArrayList<OperatorDTO>();
+	public List<OperatorNoPWDTO> getOperatorList() throws DALException {
+		List<OperatorNoPWDTO> list = new ArrayList<OperatorNoPWDTO>();
 		ResultSet rs = Connector.doQuery("SELECT * FROM operator_list;");
 		try
 		{
 			while (rs.next()) 
 			{
-				list.add(new OperatorDTO(rs.getInt("opr_id"), rs.getString("opr_name"), rs.getString("ini"), rs.getString("cpr"), rs.getString("password"), rs.getBoolean("admin"), rs.getString("role")));
+				list.add(new OperatorNoPWDTO(rs.getInt("opr_id"), rs.getString("opr_name"), rs.getString("ini"), rs.getString("cpr"), rs.getBoolean("admin"), rs.getString("role")));
 			}
 		}
 		catch (SQLException e) { throw new DALException(e); }
