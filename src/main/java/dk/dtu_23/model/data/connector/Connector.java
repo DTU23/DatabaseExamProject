@@ -57,6 +57,8 @@ public class Connector
 		try { return stm.executeUpdate(cmd); }
 		catch (SQLException e) { throw new DALException(e); }
 	}
-	
-	
+	public static int resetData() throws DALException{
+		try { return stm.executeUpdate("CALL reset_data();"); }
+		catch (SQLException e) { throw new DALException(e); }
+	}
 }
