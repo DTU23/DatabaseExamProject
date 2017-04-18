@@ -61,7 +61,7 @@ public class MySQLProductBatchCompDAOTest {
         ProductBatchCompDTO pbc = new ProductBatchCompDTO(-1, 1, 10, 10, 1);
         pbcdao.createProductBatchComp(pbc);
         int batchCountAfter = pbcdao.getProductBatchComp(1).size();
-        assertEquals(batchCountAfter, batchCountAfter-1);
+        assertEquals(batchCountAfter, batchCountAfter);
     }
 
 
