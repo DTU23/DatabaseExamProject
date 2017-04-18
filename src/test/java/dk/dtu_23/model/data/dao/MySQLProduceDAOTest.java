@@ -1,10 +1,7 @@
 package dk.dtu_23.model.data.dao;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -38,24 +35,19 @@ public class MySQLProduceDAOTest {
 	public void testGetProduceByID() throws Exception {
 		ProduceDTO actual = null;
 		ProduceDTO expected = new ProduceDTO(2, "tomat", "Knoor");
-
+		// Get produce by ID from DB
 		actual = produce.getProduce(2);
-
-		assertThat(actual, is(expected));
+		assertThat(actual.toString(), is(expected.toString()));
 	}
-
+	
 	/**
 	 * Negative test. Try to get produce with non-existing ID.
 	 */
 	@Test
 	public void testGetProduceByIDThatDoesntExist() throws Exception {
-		String output = null;
 		ProduceDTO actual = null;
-
+		// Get produce by ID from DB
 		actual = produce.getProduce(10);
-
-		assertThat(output, notNullValue());
-		assertThat(output, is("Produce with id 10 does not exist"));
 		assertThat(actual, nullValue());
 	}
 
@@ -67,15 +59,17 @@ public class MySQLProduceDAOTest {
 		List<ProduceDTO> produceList = null;
 		// Last row in our table, produce
 		ProduceDTO produceDTO = new ProduceDTO(7, "champignon", "Igloo Frostvarer");
-
+		// Get whole table, produce, from DB
 		produceList = produce.getProduceList();
 
 		// Print out the produce list to console
+		System.out.println("testGetProduceList(): ");
 		for(int i = 0; i < produceList.size(); i++)
 			System.out.println(produceList.get(i));
-
+		System.out.println();
+		
 		assertThat(produceList, notNullValue());
-		assertThat(produceList.get(6), is(produceDTO));
+		assertThat(produceList.get(6).toString(), is(produceDTO.toString()));
 	}
 
 	/**
@@ -89,7 +83,7 @@ public class MySQLProduceDAOTest {
 		produce.createProduce(expected);
 		actual = produce.getProduce(8);
 
-		assertThat(actual, is(expected));
+		assertThat(actual.toString(), is(expected.toString()));
 	}
 
 	/**
@@ -103,7 +97,7 @@ public class MySQLProduceDAOTest {
 		produce.createProduce(newProduce);
 		actual = produce.getProduce(1);
 
-		assertThat(actual, is(not(newProduce)));
+		assertThat(actual.toString(), is(not(newProduce.toString())));
 	}
 
 	/**
@@ -116,8 +110,8 @@ public class MySQLProduceDAOTest {
 
 		produce.updateProduce(expected);
 		actual = produce.getProduce(4);
-
-		assertThat(actual, is(expected));
+		
+		assertThat(actual.toString(), is(expected.toString()));
 	}
 
 	/**
@@ -132,11 +126,13 @@ public class MySQLProduceDAOTest {
 		produceOverview = produce.getProduceOverview();
 
 		// Print out the produce overview to console
+		System.out.println("testGetProduceOverview(): ");
 		for(int i = 0; i < produceOverview.size(); i++)
 			System.out.println(produceOverview.get(i));
-
+		System.out.println();
+		
 		assertThat(produceOverview, notNullValue());
-		assertThat(produceOverview.get(0), is(produceOverviewDTO));
+		assertThat(produceOverview.get(0).toString(), is(produceOverviewDTO.toString()));
 	}
 
 }
