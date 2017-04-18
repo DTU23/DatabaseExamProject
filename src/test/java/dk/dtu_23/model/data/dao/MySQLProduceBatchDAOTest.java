@@ -34,7 +34,7 @@ public class MySQLProduceBatchDAOTest {
 	 */
 	@Test
 	public void testGetProduceBatchByID() throws Exception {
-		ProduceBatchDTO expected = new ProduceBatchDTO(1, "dej", "Wawelka", 800);
+		ProduceBatchDTO expected = new ProduceBatchDTO(1, "dej", "Wawelka", 1000);
 		ProduceBatchDTO actual = null;
 		// Get produce batch from DB specified by ID
 		actual = produceBatch.getProduceBatch(1);
@@ -47,9 +47,17 @@ public class MySQLProduceBatchDAOTest {
 	@Test
 	public void testGetProduceBatchByIDThatDoesntExist() throws Exception{
 		ProduceBatchDTO actual = null;
-		actual = produceBatch.getProduceBatch(17);
-
+		String error = null;
+		
+		try {
+			actual = produceBatch.getProduceBatch(17);
+		} catch (DALException e) {
+			e.printStackTrace();
+			error = e.getMessage();
+		}
+		
 		assertThat(actual, nullValue());
+		assertThat(error, notNullValue());
 	}
 
 	/**
@@ -77,16 +85,21 @@ public class MySQLProduceBatchDAOTest {
 	 * Positive test. Create a produce batch.
 	 */
 	@Test
-	public void testCreateProduceBatch() throws Exception{
+	public void testCreateProduceBatch() throws Exception {
+		// Get an already created produce
+		MySQLProduceDAO produce = new MySQLProduceDAO();
+		ProduceDTO produceDTO = produce.getProduce(4);
+		// Define amount of produce
 		double amount = 500;
-		ProduceDTO produceDTO = new ProduceDTO(8, "chips", "Kims");
 		
-		ProduceBatchDTO expected = new ProduceBatchDTO(8, "chips", "Kims", amount);
 		ProduceBatchDTO actual = null;
-
+		ProduceBatchDTO expected = new ProduceBatchDTO(4, "ost", "Ost og Skinke A/S", amount);
+		
 		produceBatch.createProduceBatch(produceDTO, amount);
 		actual = produceBatch.getProduceBatch(8);
 
+		System.out.println(actual + "\n" + expected);
+		
 		assertThat(actual.toString(), is(expected.toString()));
 	}
 
@@ -111,12 +124,12 @@ public class MySQLProduceBatchDAOTest {
 	 */
 	@Test
 	public void testUpdateProduceBatch() throws Exception {
-		ProduceBatchDTO pbDTO = new ProduceBatchDTO(1, "dej", "Wawelka", 1000);
+		ProduceBatchDTO pbDTO = new ProduceBatchDTO(3, "tomat", "Veaubais", 300);
 		ProduceBatchDTO actual = null;
-		double amount = 800;
+		double amount = 600;
 
 		produceBatch.updateProduceBatch(pbDTO, amount);
-		actual = produceBatch.getProduceBatch(1);
+		actual = produceBatch.getProduceBatch(3);
 
 		assertThat(actual.toString(), is(not(pbDTO.toString())));
 		assertThat(actual.getAmount(), is(amount));
