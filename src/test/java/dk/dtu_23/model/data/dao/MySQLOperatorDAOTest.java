@@ -3,7 +3,6 @@ package dk.dtu_23.model.data.dao;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.After;
@@ -12,6 +11,7 @@ import org.junit.Test;
 
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.OperatorDTO;
+import dk.dtu_23.model.OperatorNoPWDTO;
 import dk.dtu_23.model.data.interfaces.DALException;
 
 public class MySQLOperatorDAOTest {
@@ -95,6 +95,7 @@ public class MySQLOperatorDAOTest {
 	@Test
 	public void testCreateOperatorInvalidRole() {
 		String errorMsg = null;
+		String errorMsg2 = null;
 		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou", false, "Admin");
 		OperatorDTO OprCheck = null;
 		try {
@@ -102,12 +103,10 @@ public class MySQLOperatorDAOTest {
 		} catch (DALException e) { errorMsg = e.getMessage(); }
 		try {
 			OprCheck = opr.getOperator(5);
-		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(OprCheck, notNullValue());
-		assertThat(OprCheck.toString(), is(not(equalTo(newOpr.toString()))));
-		newOpr.setRole("None");
-		assertThat(OprCheck.toString(), is(not(equalTo(newOpr.toString()))));
+		} catch (DALException e) { errorMsg2 = e.getMessage(); }
+		assertThat(OprCheck, nullValue());
 		assertThat(errorMsg, notNullValue());
+		assertThat(errorMsg2, notNullValue());
 	}
 
 	/**
@@ -207,12 +206,11 @@ public class MySQLOperatorDAOTest {
 	 */
 	@Test
 	public void testGetOperatorList() {
-		List<OperatorDTO> list = null;
+		List<OperatorNoPWDTO> list = null;
 		try {
 			list = opr.getOperatorList();
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(list, notNullValue());
-		assertThat(list.get(0).getPassword(), nullValue());
 		assertThat(list.get(0).getOprId(), notNullValue());
 		assertThat(list.get(0).getOprName(), notNullValue());
 		assertThat(list.get(0).getIni(), notNullValue());
