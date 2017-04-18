@@ -20,18 +20,14 @@ public class MySQLOperatorDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		try { new Connector(); } 
-		catch (InstantiationException e) { e.printStackTrace(); }
-		catch (IllegalAccessException e) { e.printStackTrace(); }
-		catch (ClassNotFoundException e) { e.printStackTrace(); }
-		catch (SQLException e) { e.printStackTrace(); }
-		//TODO mangler noget reset database
+		new Connector();
+		Connector.resetData();
 		opr = new MySQLOperatorDAO();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		//TODO mangler noget reset database
+		Connector.resetData();
 		opr = null;
 	}
 
@@ -45,7 +41,7 @@ public class MySQLOperatorDAOTest {
 		try {
 			opr3 = opr.getOperator(3);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(opr3, is(equalTo(oprCheck)));
+		assertThat(opr3.toString(), is(equalTo(oprCheck.toString())));
 	}
 
 	/**
@@ -71,7 +67,7 @@ public class MySQLOperatorDAOTest {
 			opr.createOperator(newOpr);
 			OprCheck = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(OprCheck, is(equalTo(newOpr)));
+		assertThat(OprCheck.toString(), is(equalTo(newOpr.toString())));
 	}
 
 	/**
@@ -89,7 +85,7 @@ public class MySQLOperatorDAOTest {
 			OprCheck = opr.getOperator(3);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheck, notNullValue());
-		assertThat(newOpr, is(not(equalTo(OprCheck))));
+		assertThat(newOpr.toString(), is(not(equalTo(OprCheck.toString()))));
 		assertThat(errorMsg, notNullValue());
 	}
 
@@ -108,9 +104,9 @@ public class MySQLOperatorDAOTest {
 			OprCheck = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheck, notNullValue());
-		assertThat(OprCheck, is(not(equalTo(newOpr))));
+		assertThat(OprCheck.toString(), is(not(equalTo(newOpr.toString()))));
 		newOpr.setRole("None");
-		assertThat(OprCheck, is(not(equalTo(newOpr))));
+		assertThat(OprCheck.toString(), is(not(equalTo(newOpr.toString()))));
 		assertThat(errorMsg, notNullValue());
 	}
 
@@ -129,7 +125,7 @@ public class MySQLOperatorDAOTest {
 		try {
 			OprCheckBeforeEdit = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(OprCheckBeforeEdit, is(equalTo(newOpr)));
+		assertThat(OprCheckBeforeEdit.toString(), is(equalTo(newOpr.toString())));
 		try {
 			opr.updateOperator(editedInitials);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
@@ -138,8 +134,8 @@ public class MySQLOperatorDAOTest {
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheckBeforeEdit, notNullValue());
 		assertThat(OprCheckAfterEdit, notNullValue());
-		assertThat(OprCheckAfterEdit, is(equalTo(editedInitials)));
-		assertThat(OprCheckBeforeEdit, is(not(equalTo(OprCheckAfterEdit))));
+		assertThat(OprCheckAfterEdit.toString(), is(equalTo(editedInitials.toString())));
+		assertThat(OprCheckBeforeEdit.toString(), is(not(equalTo(OprCheckAfterEdit.toString()))));
 	}
 
 	/**
@@ -159,7 +155,7 @@ public class MySQLOperatorDAOTest {
 		try {
 			OprCheckBeforeEdit = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(OprCheckBeforeEdit, is(equalTo(newOpr)));
+		assertThat(OprCheckBeforeEdit.toString(), is(equalTo(newOpr.toString())));
 		try {
 			opr.updateOperator(editedID);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
@@ -172,8 +168,8 @@ public class MySQLOperatorDAOTest {
 		assertThat(OprCheckBeforeEdit, notNullValue());
 		assertThat(Opr5AfterEdit, notNullValue());
 		assertThat(Opr6AfterEdit, nullValue());
-		assertThat(Opr5AfterEdit, is(equalTo(OprCheckBeforeEdit)));
-		assertThat(Opr6AfterEdit, is(not(equalTo(editedID))));
+		assertThat(Opr5AfterEdit.toString(), is(equalTo(OprCheckBeforeEdit.toString())));
+		assertThat(Opr6AfterEdit.toString(), is(not(equalTo(editedID.toString()))));
 		assertThat(errorMsg, notNullValue());
 	}
 
@@ -193,7 +189,7 @@ public class MySQLOperatorDAOTest {
 		try {
 			OprCheckBeforeEdit = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(OprCheckBeforeEdit, is(equalTo(newOpr)));
+		assertThat(OprCheckBeforeEdit.toString(), is(equalTo(newOpr.toString())));
 		try {
 			opr.updateOperator(editedRole);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
@@ -202,8 +198,8 @@ public class MySQLOperatorDAOTest {
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheckBeforeEdit, notNullValue());
 		assertThat(OprCheckAfterEdit, notNullValue());
-		assertThat(OprCheckAfterEdit, is(not(equalTo(editedRole))));
-		assertThat(OprCheckAfterEdit, is(equalTo(OprCheckBeforeEdit)));
+		assertThat(OprCheckAfterEdit.toString(), is(not(equalTo(editedRole.toString()))));
+		assertThat(OprCheckAfterEdit.toString(), is(equalTo(OprCheckBeforeEdit.toString())));
 		assertThat(errorMsg, notNullValue());
 	}
 
