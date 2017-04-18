@@ -49,7 +49,7 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 
 	@Override
 	public void createProduceBatch(ProduceDTO produce, double amount) throws DALException {
-		Connector.doQuery("CALL create_produce_batch_from_produce_id('"+amount+"', '"+produce.getProduceId()+"');");
+		Connector.doQuery("CALL create_produce_batch_from_produce_id("+produce.getProduceId()+", "+amount+");");
 	}
 
 	@Override

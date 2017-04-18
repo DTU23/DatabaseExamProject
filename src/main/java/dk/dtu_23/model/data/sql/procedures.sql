@@ -59,10 +59,10 @@ DELIMITER ;
 Produce_batch
  */
 DELIMITER //
-CREATE PROCEDURE create_produce_batch_from_produce_id
-(IN input_amount DOUBLE, IN input_produce_id INT)
-BEGIN
-  INSERT INTO producebatch(amount, produce_id) VALUES(input_amount, input_produce_id);
+CREATE PROCEDURE create_produce_batch_from_produce_id(IN input_produce_id INT, IN input_amount DOUBLE)
+  BEGIN
+  INSERT INTO producebatch(produce_id, amount)
+  VALUES(input_produce_id, input_amount);
 END //
 DELIMITER ;
 
