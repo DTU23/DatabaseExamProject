@@ -15,7 +15,8 @@ public class MySQLOperatorDAO implements OperatorDAO {
 
 	public OperatorDTO getOperator(int oprId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM operator WHERE opr_id = " + oprId + ";");
-		try {
+		try
+		{
 			if (!rs.first()) throw new DALException("Operator with id " + oprId + " does not exist");
 			return new OperatorDTO (rs.getInt("opr_id"), rs.getString("opr_name"), rs.getString("ini"), rs.getString("cpr"), rs.getString("password"), rs.getBoolean("admin"), rs.getString("role"));
 		}
@@ -28,8 +29,11 @@ public class MySQLOperatorDAO implements OperatorDAO {
 	}
 
 	public void updateOperator(OperatorDTO opr) throws DALException {
-		Connector.doUpdate("CALL update_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
-				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');");
+		if(Connector.doUpdate("CALL update_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
+				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');") == 0)
+		{
+			throw new DALException("No rows affected");
+		}
 	}
 
 	public List<OperatorNoPWDTO> getOperatorList() throws DALException {
