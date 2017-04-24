@@ -82,6 +82,12 @@ public class MySQLProduceDAO implements ProduceDAO {
 		Connector.doQuery("CALL update_produce_by_id('"+produce.getProduceId()+"', '" + produce.getProduceName() + "', '" + produce.getSupplier() + "');");
 	}
 
+	/**
+	 * Returns the view 'produce_overview' as a list of ProduceOverviewDTO's. 
+	 * Uses the view 'produce_overview' in the database.
+	 * @return list - a list of ProduceDTO's
+	 */
+	@Override
 	public List<ProduceOverviewDTO> getProduceOverview() throws DALException{
 		List<ProduceOverviewDTO> list = new ArrayList<ProduceOverviewDTO>();
 		ResultSet rs = Connector.doQuery("SELECT * FROM produce_overview;");
