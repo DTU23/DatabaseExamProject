@@ -1,6 +1,5 @@
 package dk.dtu_23.model.data.dao;
 
-
 import dk.dtu_23.model.ProduceOverviewDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
@@ -11,6 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * 
+ * This class is the implementation of ProduceDAO.
+ * This class (data access object) accesses the data in the relation 'produce' from the database.
+ * We are using the relation 'produce', the routine 'create_produce(TEXT, TEXT)' and 'update_produce_by_id(INT, TEXT, TEXT)'.
+ * @author Frederik Værnegaard
+ * 
+ */
 
 public class MySQLProduceDAO implements ProduceDAO {
 
