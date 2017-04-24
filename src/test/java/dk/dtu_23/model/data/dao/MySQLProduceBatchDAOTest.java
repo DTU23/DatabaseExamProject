@@ -14,13 +14,19 @@ import dk.dtu_23.model.ProduceDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 
+/**
+ * This JUnit class tests the MySQLProduceDAO class.
+ * @author Frederik Værnegaard
+ * 
+ */
+
 public class MySQLProduceBatchDAOTest {
 
 	MySQLProduceBatchDAO produceBatch;
 
 	@Before
 	public void setUp() throws Exception {
-		new Connector();		
+		new Connector();
 		produceBatch = new MySQLProduceBatchDAO();
 	}
 
@@ -93,12 +99,10 @@ public class MySQLProduceBatchDAOTest {
 		double amount = 500;
 
 		ProduceBatchDTO actual = null;
-		ProduceBatchDTO expected = new ProduceBatchDTO(4, "ost", "Ost og Skinke A/S", amount);
+		ProduceBatchDTO expected = new ProduceBatchDTO(8, "tomat", "Franz", amount);
 
 		produceBatch.createProduceBatch(produceDTO, amount);
 		actual = produceBatch.getProduceBatch(8);
-
-		System.out.println(actual + "\n" + expected);
 
 		assertThat(actual.toString(), is(expected.toString()));
 	}
