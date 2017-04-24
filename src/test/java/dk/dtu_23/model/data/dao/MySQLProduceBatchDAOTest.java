@@ -15,7 +15,7 @@ import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 
 /**
- * This JUnit class tests the MySQLProduceDAO class.
+ * This JUnit class tests the MySQLProduceBatchDAO class.
  * @author Frederik Værnegaard
  * 
  */
