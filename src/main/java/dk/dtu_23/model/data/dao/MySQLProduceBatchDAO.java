@@ -58,6 +58,14 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 		return list;
 	}
 
+	/**
+	 * Creates a produce batch in the relation 'producebatch'.
+	 * The method calls a routine defined in the database.
+	 * The routine only needs an already existing produceId and the specified amount of the batch.
+	 * Uses the routine 'create_produce_batch_from_produce_id'.
+	 * @param produce - an already existing produce (only uses produceId)
+	 * @param amount - the specified amount of the new produce batch
+	 */
 	@Override
 	public void createProduceBatch(ProduceDTO produce, double amount) throws DALException {
 		Connector.doQuery("CALL create_produce_batch_from_produce_id("+produce.getProduceId()+", "+amount+");");
