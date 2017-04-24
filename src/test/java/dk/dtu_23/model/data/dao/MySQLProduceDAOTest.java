@@ -14,6 +14,12 @@ import dk.dtu_23.model.ProduceOverviewDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 
+/**
+ * This JUnit class tests the MySQLProduceDAO class.
+ * @author Frederik Værnegaard
+ * 
+ */
+
 public class MySQLProduceDAOTest {
 
 	MySQLProduceDAO produce;
@@ -47,9 +53,19 @@ public class MySQLProduceDAOTest {
 	@Test
 	public void testGetProduceByIDThatDoesntExist() throws Exception {
 		ProduceDTO actual = null;
-		// Get produce by ID from DB
+		String error = null;
+		
+		// We expect this won't work and therefore throw a DALException
+		try {
+		// Get produce by non-existing ID from DB
 		actual = produce.getProduce(10);
+		} catch (DALException e) {
+			// e.printStackTrace();
+			error = e.getMessage();
+		}
+		
 		assertThat(actual, nullValue());
+		assertThat(error, notNullValue());
 	}
 
 	/**
@@ -78,7 +94,8 @@ public class MySQLProduceDAOTest {
 	 */
 	@Test
 	public void testCreateProduce() throws Exception {
-		ProduceDTO expected = new ProduceDTO(8, "smør", "Kærgården");
+		// The ID doesn't affect anything when creating, because it will be auto generated
+		ProduceDTO expected = new ProduceDTO(8, "smør", "Kærgården"); 
 		ProduceDTO actual = null;
 
 		produce.createProduce(expected);
@@ -102,7 +119,7 @@ public class MySQLProduceDAOTest {
 	}
 
 	/**
-	 * Positive test. Get produce overview
+	 * Positive test. Get the view produce_overview
 	 */
 	@Test
 	public void testGetProduceOverview() throws Exception {
