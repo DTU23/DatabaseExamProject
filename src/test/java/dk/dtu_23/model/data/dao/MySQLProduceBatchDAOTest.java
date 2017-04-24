@@ -48,14 +48,14 @@ public class MySQLProduceBatchDAOTest {
 	public void testGetProduceBatchByIDThatDoesntExist() throws Exception{
 		ProduceBatchDTO actual = null;
 		String error = null;
-		
+
 		try {
 			actual = produceBatch.getProduceBatch(17);
 		} catch (DALException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			error = e.getMessage();
 		}
-		
+
 		assertThat(actual, nullValue());
 		assertThat(error, notNullValue());
 	}
@@ -91,32 +91,16 @@ public class MySQLProduceBatchDAOTest {
 		ProduceDTO produceDTO = produce.getProduce(4);
 		// Define amount of produce
 		double amount = 500;
-		
+
 		ProduceBatchDTO actual = null;
 		ProduceBatchDTO expected = new ProduceBatchDTO(4, "ost", "Ost og Skinke A/S", amount);
-		
+
 		produceBatch.createProduceBatch(produceDTO, amount);
 		actual = produceBatch.getProduceBatch(8);
 
 		System.out.println(actual + "\n" + expected);
-		
+
 		assertThat(actual.toString(), is(expected.toString()));
-	}
-
-	/**
-	 * Negative test. Create a produce batch with already existing ID.
-	 */
-	@Test
-	public void testCreateProduceBatchWithAlreadyExistingID() throws Exception {
-		double amount = 500;
-		ProduceDTO produceDTO = new ProduceDTO(5, "chips", "Kims");
-		ProduceBatchDTO expected = new ProduceBatchDTO(5, "chips", "Kims", amount);
-		ProduceBatchDTO actual = null;
-
-		produceBatch.createProduceBatch(produceDTO, amount);
-		actual = produceBatch.getProduceBatch(5);
-
-		assertThat(actual.toString(), is(not(expected.toString())));
 	}
 
 	/**
@@ -142,12 +126,20 @@ public class MySQLProduceBatchDAOTest {
 	public void testUpdateProduceBatchThatDoesntExist() throws Exception{
 		ProduceBatchDTO pbDTO = new ProduceBatchDTO(12, "ketchup", "Heinz", 200);
 		ProduceBatchDTO actual = null;
+		String error = null;
 		double amount = 400;
 
-		produceBatch.updateProduceBatch(pbDTO, amount);
-		actual = produceBatch.getProduceBatch(12);
+		// We expect this won't work, and therefore we try-catch a DALException
+		try {
+			produceBatch.updateProduceBatch(pbDTO, amount);
+			actual = produceBatch.getProduceBatch(12);
+		} catch (DALException e) {
+			// e.printStackTrace();
+			error = e.getMessage();
+		}
 
-		assertThat(actual.toString(), is(not(pbDTO.toString())));
+		assertThat(error, notNullValue());
+		assertThat(actual, nullValue());
 	}
 
 }
