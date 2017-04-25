@@ -33,13 +33,18 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 
 	@Override
 	public void createProductBatchComp(ProductBatchCompDTO productbatchcomponent) throws DALException {
-		Connector.doQuery("CALL create_product_batch_component(" + productbatchcomponent.getPbId() + "," + productbatchcomponent.getRbId() + "," + productbatchcomponent.getTara() + "," + productbatchcomponent.getNetto() + "," + productbatchcomponent.getOprId() + ");");
+		MySQLProductBatchDAO pbdao = new MySQLProductBatchDAO();
+		if(pbdao.exists(productbatchcomponent.getPbId())){
+			Connector.doQuery("CALL create_product_batch_component(" + productbatchcomponent.getPbId() + "," + productbatchcomponent.getRbId() + "," + productbatchcomponent.getTara() + "," + productbatchcomponent.getNetto() + "," + productbatchcomponent.getOprId() + ");");
+		}else{
+			throw new DALException("Invalid ProductBatch ID");
+		}
 	}
 
 	@Override
 	public List<ProductBatchCompDTO> getProductBatchCompList(int pbId) throws DALException {
 		List<ProductBatchCompDTO> list = new ArrayList<ProductBatchCompDTO>();
-		ResultSet rs = Connector.doQuery("SELECT * productbatchcomponent WHERE pb_id="+pbId+";");
+		ResultSet rs = Connector.doQuery("SELECT * FROM productbatchcomponent;");
 		try
 		{
 			while (rs.next())
@@ -62,7 +67,7 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 	@Override
 	public List<ProductBatchCompOverviewDTO> getProductBatchCompOverview() throws DALException {
 		List<ProductBatchCompOverviewDTO> list = new ArrayList<ProductBatchCompOverviewDTO>();
-		ResultSet rs = Connector.doQuery("SELECT * product_batch_component_overview;");
+		ResultSet rs = Connector.doQuery("SELECT * FROM product_batch_component_overview;");
 		try
 		{
 			while (rs.next())
@@ -89,15 +94,20 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 		ResultSet rs = Connector.doQuery("CALL get_product_batch_component_supplier_details_by_pb_id("+pbId+");");
 		try
 		{
-			while (rs.next())
-			{
-				list.add(new ProductBatchCompSupplierDetailsDTO(
-						rs.getInt("rb_id"),
-						rs.getString("produce_name"),
-						rs.getString("supplier"),
-						rs.getDouble("netto"),
-						rs.getInt("opr_id")
-				));
+			if(rs.first()){
+				while (rs.next())
+				{
+					list.add(new ProductBatchCompSupplierDetailsDTO(
+							rs.getInt("rb_id"),
+							rs.getString("produce_name"),
+							rs.getString("supplier"),
+							rs.getDouble("netto"),
+							rs.getInt("opr_id")
+					));
+				}
+			}
+			else{
+				throw new DALException("Invalid ID provided");
 			}
 		}
 		catch (SQLException e) {

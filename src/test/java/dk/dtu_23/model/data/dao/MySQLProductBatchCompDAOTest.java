@@ -21,6 +21,7 @@ public class MySQLProductBatchCompDAOTest {
     @Before
     public void setUp() throws Exception {
         new Connector();
+        Connector.resetData();
         pbcdao = new MySQLProductBatchCompDAO();
         pbdao = new MySQLProductBatchDAO();
     }
@@ -38,16 +39,16 @@ public class MySQLProductBatchCompDAOTest {
     @Test
     public void getProductBatchComp() throws Exception {
         ProductBatchCompDTO pbc1;
-        ProductBatchCompDTO expected = new ProductBatchCompDTO(1, 1, 0.5, 10.5, 1);
+        ProductBatchCompDTO expected = new ProductBatchCompDTO(1, 1, 0.5, 10.05, 1);
         pbc1 = pbcdao.getProductBatchComp(1, 1);
-        assertThat(pbc1, is(equalTo(expected)));
+        assertThat(pbc1.toString(), is(equalTo(expected.toString())));
     }
 
     /**
      * Negative test for getProductBatchComp
      * @throws Exception
      */
-    @Test
+    @Test (expected = DALException.class)
     public void getProductBatchCompWithNonExistentID() throws Exception {
         ProductBatchCompDTO pbc1;
         pbc1 = pbcdao.getProductBatchComp(-1, -1);
@@ -64,7 +65,7 @@ public class MySQLProductBatchCompDAOTest {
         int batchCountBefore = pbcdao.getProductBatchCompList(pb_id).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(pb_id, 1, 10, 10, 1));
         int batchCountAfter = pbcdao.getProductBatchCompList(pb_id).size();
-        assertEquals(batchCountAfter, batchCountAfter-1);
+        assertEquals(batchCountBefore, batchCountAfter-1);
         assertThat(pbdao.getProductBatch(pb_id).getStatus(), is(not(0)));
     }
 
@@ -72,13 +73,13 @@ public class MySQLProductBatchCompDAOTest {
      * Negative test for createProductBatchComp
      * @throws Exception
      */
-    @Test
+    @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidID() throws Exception {
         int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         ProductBatchCompDTO pbc = new ProductBatchCompDTO(-1, 1, 10, 10, 1);
         pbcdao.createProductBatchComp(pbc);
         int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
-        assertEquals(batchCountAfter, batchCountAfter);
+        assertEquals(batchCountBefore, batchCountAfter);
     }
 
     /**
@@ -90,7 +91,7 @@ public class MySQLProductBatchCompDAOTest {
         int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, 10, -10, 1));
         int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
-        assertEquals(batchCountAfter, batchCountAfter);
+        assertEquals(batchCountBefore, batchCountAfter);
     }
 
     /**
@@ -102,7 +103,7 @@ public class MySQLProductBatchCompDAOTest {
         int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, -10, 10, 1));
         int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
-        assertEquals(batchCountAfter, batchCountAfter);
+        assertEquals(batchCountBefore, batchCountAfter);
     }
 
     /**

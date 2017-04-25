@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertEquals;
@@ -18,11 +19,13 @@ public class MySQLProductBatchDAOTest {
     @Before
     public void setUp() throws Exception {
         new Connector();
+        Connector.resetData();
         pbdao = new MySQLProductBatchDAO();
     }
 
     @After
     public void tearDown() throws Exception {
+        Connector.resetData();
         pbdao = null;
     }
 
@@ -33,9 +36,9 @@ public class MySQLProductBatchDAOTest {
     @Test
     public void getProductBatch() throws Exception {
         ProductBatchDTO pb1, expected;
-        expected = new ProductBatchDTO(1, 0, 1, "margherita");
+        expected = new ProductBatchDTO(1, 1, 1);
         pb1 = pbdao.getProductBatch(1);
-        assertThat(pb1, is(equalTo(expected)));
+        assertThat(pb1.toString(), is(equalTo(expected.toString())));
     }
 
     /**
@@ -46,7 +49,7 @@ public class MySQLProductBatchDAOTest {
     public void getProductBatchList() throws Exception {
         List<ProductBatchDTO> list;
         list = pbdao.getProductBatchList();
-        assertThat(list, is(not(equalTo(null))));
+        assertThat(list, notNullValue());
     }
 
     /**
@@ -56,7 +59,7 @@ public class MySQLProductBatchDAOTest {
     @Test
     public void createProductBatch() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(-1, 0, 1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(-1, 0, 1);
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter-1);
@@ -66,10 +69,10 @@ public class MySQLProductBatchDAOTest {
      * Negative test for createProductBatch
      * @throws Exception
      */
-    @Test(expected=DALException.class)
+    @Test(expected = DALException.class)
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1);
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
@@ -82,7 +85,7 @@ public class MySQLProductBatchDAOTest {
     @Test(expected=DALException.class)
     public void createProductBatchWithInvalidRecipeID() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
-        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, -1, "margharita");
+        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, -1);
         pbdao.createProductBatch(newPb);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
@@ -94,21 +97,14 @@ public class MySQLProductBatchDAOTest {
      */
     @Test
     public void updateProductBatchStatus() throws Exception {
-        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
-        ProductBatchDTO editedStatus = new ProductBatchDTO(1, 1, 1, "margherita");
+        ProductBatchDTO beforeEdit = pbdao.getProductBatch(1);
+        ProductBatchDTO afterEdit = pbdao.getProductBatch(1);
+        afterEdit.setStatus(0);
 
-        ProductBatchDTO PbCheckBeforeEdit;
-        ProductBatchDTO PbCheckAfterEdit;
+        pbdao.updateProductBatchStatus(afterEdit);
 
-        PbCheckBeforeEdit = pbdao.getProductBatch(1);
-        assertThat(newPb, is(equalTo(PbCheckBeforeEdit)));
-
-        pbdao.updateProductBatch(editedStatus);
-
-        PbCheckAfterEdit = pbdao.getProductBatch(1);
-
-        assertThat(editedStatus, is(equalTo(PbCheckAfterEdit)));
-        assertThat(PbCheckBeforeEdit, is(not(equalTo(PbCheckAfterEdit))));
+        assertThat(afterEdit.toString(), is(equalTo(pbdao.getProductBatch(1).toString())));
+        assertThat(beforeEdit.toString(), is(not(equalTo(pbdao.getProductBatch(1).toString()))));
     }
 
     /**
@@ -117,20 +113,13 @@ public class MySQLProductBatchDAOTest {
      */
     @Test(expected = DALException.class)
     public void updateProductBatchWithInvalidStatus() throws Exception {
-        ProductBatchDTO newPb = new ProductBatchDTO(1, 0, 1, "margherita");
-        ProductBatchDTO editedInvalidStatus = new ProductBatchDTO(1, -1, 1, "margherita");
+        ProductBatchDTO beforeEdit = pbdao.getProductBatch(1);
+        ProductBatchDTO afterEdit = pbdao.getProductBatch(1);
+        afterEdit.setStatus(-1);
 
-        ProductBatchDTO PbCheckBeforeEdit;
-        ProductBatchDTO PbCheckAfterEdit;
+        pbdao.updateProductBatchStatus(afterEdit);
 
-        PbCheckBeforeEdit = pbdao.getProductBatch(1);
-        assertThat(newPb, is(equalTo(PbCheckBeforeEdit)));
-
-        pbdao.updateProductBatch(editedInvalidStatus);
-
-        PbCheckAfterEdit = pbdao.getProductBatch(1);
-
-        assertThat(editedInvalidStatus, is(not(equalTo(PbCheckAfterEdit))));
-        assertThat(PbCheckBeforeEdit, is(equalTo(PbCheckAfterEdit)));
+        assertThat(afterEdit.toString(), is(not(equalTo(pbdao.getProductBatch(1).toString()))));
+        assertThat(beforeEdit.toString(), is(equalTo(pbdao.getProductBatch(1).toString())));
     }
 }
