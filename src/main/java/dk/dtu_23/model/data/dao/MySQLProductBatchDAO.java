@@ -14,7 +14,7 @@ public class MySQLProductBatchDAO implements ProductBatchDAO {
 
 	@Override
 	public ProductBatchDTO getProductBatch(int pbId) throws DALException {
-		ResultSet rs = Connector.doQuery("SELECT * FROM product_batch_list WHERE pb_id = " + pbId + ";");
+		ResultSet rs = Connector.doQuery("SELECT * FROM productbatch WHERE pb_id = " + pbId + ";");
 		try {
 			if (!rs.first()) throw new DALException("Product batch with id " + pbId + " does not exist");
 			return new ProductBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recipe_id"), rs.getString("recipeName"));
