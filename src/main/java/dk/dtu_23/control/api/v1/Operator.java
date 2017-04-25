@@ -1,5 +1,6 @@
 package dk.dtu_23.control.api.v1;
 
+import dk.dtu_23.model.OperatorNoPWDTO;
 import dk.dtu_23.model.data.dao.MySQLOperatorDAO;
 import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.OperatorDTO;
@@ -28,8 +29,8 @@ public class Operator {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OperatorDTO> getOperator() {
-        List<OperatorDTO> list = new ArrayList<>();
+    public List<OperatorNoPWDTO> getOperator() {
+        List<OperatorNoPWDTO> list = new ArrayList<>();
         try {
             list.addAll(this.DAO.getOperatorList());
         } catch (DALException e){
