@@ -33,7 +33,12 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 
 	@Override
 	public void createProductBatchComp(ProductBatchCompDTO productbatchcomponent) throws DALException {
-		Connector.doQuery("CALL create_product_batch_component(" + productbatchcomponent.getPbId() + "," + productbatchcomponent.getRbId() + "," + productbatchcomponent.getTara() + "," + productbatchcomponent.getNetto() + "," + productbatchcomponent.getOprId() + ");");
+		MySQLProductBatchDAO pbdao = new MySQLProductBatchDAO();
+		if(pbdao.exists(productbatchcomponent.getPbId())){
+			Connector.doQuery("CALL create_product_batch_component(" + productbatchcomponent.getPbId() + "," + productbatchcomponent.getRbId() + "," + productbatchcomponent.getTara() + "," + productbatchcomponent.getNetto() + "," + productbatchcomponent.getOprId() + ");");
+		}else{
+			throw new DALException("Invalid ProductBatch ID");
+		}
 	}
 
 	@Override
