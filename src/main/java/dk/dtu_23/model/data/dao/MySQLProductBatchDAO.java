@@ -50,7 +50,7 @@ public class MySQLProductBatchDAO implements ProductBatchDAO {
 	public boolean exists(int pbId) throws DALException{
 		ResultSet rs = Connector.doQuery("SELECT * FROM productbatch WHERE pb_id = " + pbId + ";");
 		try {
-			return !rs.first();
+			return rs.first();
 		}
 		catch (SQLException e) {
 			return false;
