@@ -17,7 +17,7 @@ public class MySQLProductBatchDAO implements ProductBatchDAO {
 		ResultSet rs = Connector.doQuery("SELECT * FROM productbatch WHERE pb_id = " + pbId + ";");
 		try {
 			if (!rs.first()) throw new DALException("Product batch with id " + pbId + " does not exist");
-			return new ProductBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recipe_id"), rs.getString("recipeName"));
+			return new ProductBatchDTO(rs.getInt("pb_id"), rs.getInt("status"), rs.getInt("recipe_id"), rs.getString("recipe_id"));
 		}
 		catch (SQLException e) {throw new DALException(e); }
 	}
@@ -45,5 +45,15 @@ public class MySQLProductBatchDAO implements ProductBatchDAO {
 	@Override
 	public void updateProductBatch(ProductBatchDTO productbatch) throws DALException {
 		Connector.doUpdate("CALL update_product_batch_status(" + productbatch.getStatus() + ");");
+	}
+
+	public boolean exists(int pbId) throws DALException{
+		ResultSet rs = Connector.doQuery("SELECT * FROM productbatch WHERE pb_id = " + pbId + ";");
+		try {
+			return !rs.first();
+		}
+		catch (SQLException e) {
+			return false;
+		}
 	}
 }
