@@ -69,7 +69,7 @@ public class MySQLProductBatchDAOTest {
      * Negative test for createProductBatch
      * @throws Exception
      */
-    @Test(expected=DALException.class)
+    @Test(expected = DALException.class)
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
         ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1);

@@ -39,7 +39,12 @@ public class MySQLProductBatchDAO implements ProductBatchDAO {
 
 	@Override
 	public void createProductBatch(ProductBatchDTO productbatch) throws DALException {
-		Connector.doUpdate("CALL create_product_batch_from_recipe_id(" + productbatch.getRecipeId() + ");");
+		if(productbatch.getStatus() == 0 || productbatch.getStatus() == 1 || productbatch.getStatus() == 2){
+
+			Connector.doUpdate("CALL create_product_batch_from_recipe_id(" + productbatch.getRecipeId() + ");");
+		}else{
+			throw new DALException("Invalid status provided!");
+		}
 	}
 
 	@Override
