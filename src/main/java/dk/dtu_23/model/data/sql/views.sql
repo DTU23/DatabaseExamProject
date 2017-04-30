@@ -5,8 +5,8 @@ CREATE OR REPLACE VIEW operator_list AS
   SELECT opr_id, ini, opr_name, cpr, admin, role
   FROM operator;
 
-# produce (Foreman)
 /**
+produce (Foreman)
 Q3 - Shows an overview of how much os each produce type is in stock.
  */
 CREATE OR REPLACE VIEW produce_overview AS
