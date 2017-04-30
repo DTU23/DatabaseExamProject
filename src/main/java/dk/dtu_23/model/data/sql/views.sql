@@ -4,8 +4,11 @@ CREATE OR REPLACE VIEW operator_list AS
   FROM operator;
 
 # produce (Foreman)
+/**
+Q3 - Shows an overview of how much os each produce type is in stock.
+ */
 CREATE OR REPLACE VIEW produce_overview AS
-  SELECT produce.produce_id, produce.produce_name, SUM(producebatch.amount) AS "amount"
+  SELECT produce.produce_name, SUM(producebatch.amount) AS "amount"
   FROM produce NATURAL JOIN producebatch
   GROUP BY produce.produce_name;
 
@@ -33,7 +36,7 @@ CREATE OR REPLACE VIEW recipe_list AS
   ORDER BY recipe_id;
 
 # Task 1 - Creates a view that contains all produces, that appears in at least two producebatches.
-# We suppose that the supplier is without significance of the shown produces.
+# We assume that the supplier is without significance of the shown produces.
 CREATE OR REPLACE VIEW produce_with_at_least_two_occurences_in_producebatch AS
   SELECT produce_name
   FROM produce NATURAL JOIN producebatch
