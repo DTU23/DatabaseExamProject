@@ -7,8 +7,11 @@ DROP PROCEDURE IF EXISTS create_produce;
 DROP PROCEDURE IF EXISTS update_produce_by_id;
 DROP PROCEDURE IF EXISTS create_product_batch_component;
 DROP PROCEDURE IF EXISTS get_product_batch_component_supplier_details_by_pb_id;
+DROP PROCEDURE IF EXISTS search_product_batch_component;
 DROP PROCEDURE IF EXISTS create_product_batch_from_recipe_id;
 DROP PROCEDURE IF EXISTS update_product_batch_status;
+DROP PROCEDURE IF EXISTS get_product_batch_with_largest_quantity;
+DROP PROCEDURE IF EXISTS get_involved_operator;
 DROP PROCEDURE IF EXISTS create_recipe;
 DROP PROCEDURE IF EXISTS create_recipe_component;
 DROP PROCEDURE IF EXISTS reset_data;
@@ -60,10 +63,16 @@ DELIMITER ;
 Produce_batch
  */
 DELIMITER //
-CREATE PROCEDURE create_produce_batch_from_produce_id(IN input_produce_id INT, IN input_amount DOUBLE)
+CREATE PROCEDURE create_produce_batch_from_produce_id
+  (
+    IN input_produce_id INT,
+    IN input_amount DOUBLE,
+    OUT rb_id INT
+  )
   BEGIN
   INSERT INTO producebatch(produce_id, amount)
   VALUES(input_produce_id, input_amount);
+  RETURN LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -91,9 +100,14 @@ Produce
  */
 DELIMITER //
 CREATE PROCEDURE create_produce
-(IN input_produce_name TEXT, IN input_supplier TEXT)
+(
+  IN input_produce_name TEXT,
+  IN input_supplier TEXT,
+  OUT produce_id INT
+)
 BEGIN
   INSERT INTO produce(produce_name, supplier) VALUES(input_produce_name, input_supplier);
+  RETURN LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -118,7 +132,8 @@ CREATE PROCEDURE create_product_batch_component
   IN input_rb_id INT,
   IN input_tara DOUBLE,
   IN input_netto DOUBLE,
-  IN input_opr_id INT)
+  IN input_opr_id INT
+)
 BEGIN
   INSERT INTO productbatchcomponent(pb_id,rb_id,tara,netto,opr_id)
   VALUES(input_pb_id,input_rb_id,input_tara,input_netto,input_opr_id);
@@ -135,14 +150,35 @@ BEGIN
 END //
 DELIMITER ;
 
+
+DELIMITER //
+CREATE PROCEDURE search_product_batch_component
+  (
+    IN input_pb_id INT,
+    IN input_rb_id INT,
+    IN input_netto DOUBLE
+  )
+  BEGIN
+    SELECT pb_id, rb_id, netto
+    FROM productbatchcomponent
+    WHERE pb_id = input_pb_id
+    AND rb_id = input_rb_id
+    and netto = input_netto;
+  END //
+DELIMITER ;
+
 /**
 Product_batch
  */
 DELIMITER //
 CREATE PROCEDURE create_product_batch_from_recipe_id
-(IN recipe_id_input INT)
+(
+  IN recipe_id_input INT,
+  OUT pb_id INT
+)
 BEGIN
   INSERT INTO productbatch(status, recipe_id) VALUES(0, recipe_id_input);
+  RETURN LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -156,14 +192,36 @@ BEGIN
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE get_product_batch_with_largest_quantity
+  (IN input_produce_name TEXT)
+  BEGIN
+    SELECT pb_id, produce_name, MAX(netto) AS "netto" FROM product_batch_component_overview
+    WHERE produce_name = input_produce_name;
+  END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_involved_operator
+  (IN input_recipe_name TEXT)
+  BEGIN
+    SELECT DISTINCT(opr_name) FROM product_batch_component_overview NATURAL JOIN operator
+    WHERE recipe_name = input_recipe_name;
+  END //
+DELIMITER ;
+
 /**
 Recipe
  */
 DELIMITER //
 CREATE PROCEDURE create_recipe
-(IN input_recipe_name TEXT)
+(
+  IN input_recipe_name TEXT,
+  OUT recipe_id INT
+)
 BEGIN
   INSERT INTO recipe(recipe_name) VALUES(input_recipe_name);
+  RETURN LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -181,6 +239,7 @@ CREATE PROCEDURE create_recipe_component
 BEGIN
   INSERT INTO recipecomponent(recipe_id, produce_id, nom_netto, tolerance)
   VALUES(input_recipe_id, input_produce_id, input_netto, input_tolerance);
+  RETURN LAST_INSERT_ID();
 END //
 DELIMITER ;
 
