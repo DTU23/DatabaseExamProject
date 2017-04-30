@@ -114,8 +114,9 @@ public class MySQLOperatorDAOTest {
 	 */
 	@Test
 	public void testUpdateOperator() {
-		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou", false, "Operator");
-		OperatorDTO editedInitials = new OperatorDTO(5,"Don Juan","DoJu","000000-0000","iloveyou", false, "Operator");
+		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou",false,"Operator");
+		OperatorDTO editObject = new OperatorDTO(5,null,"DoJu",null,null,false,null);
+		OperatorDTO expectedOpr = new OperatorDTO(5,"Don Juan","DoJu","000000-0000","iloveyou",false,"Operator");
 		OperatorDTO OprCheckBeforeEdit = null;
 		OperatorDTO OprCheckAfterEdit = null;
 		try {
@@ -126,14 +127,14 @@ public class MySQLOperatorDAOTest {
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheckBeforeEdit.toString(), is(equalTo(newOpr.toString())));
 		try {
-			opr.updateOperator(editedInitials);
+			opr.updateOperator(editObject);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		try {
 			OprCheckAfterEdit = opr.getOperator(5);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheckBeforeEdit, notNullValue());
 		assertThat(OprCheckAfterEdit, notNullValue());
-		assertThat(OprCheckAfterEdit.toString(), is(equalTo(editedInitials.toString())));
+		assertThat(expectedOpr.toString(), is(equalTo(OprCheckAfterEdit.toString())));
 		assertThat(OprCheckBeforeEdit.toString(), is(not(equalTo(OprCheckAfterEdit.toString()))));
 	}
 
