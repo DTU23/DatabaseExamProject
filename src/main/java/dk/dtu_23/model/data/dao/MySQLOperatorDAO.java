@@ -13,6 +13,7 @@ import java.util.List;
 
 public class MySQLOperatorDAO implements OperatorDAO {
 
+	@Override
 	public OperatorDTO getOperator(int oprId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM operator WHERE opr_id = " + oprId + ";");
 		try
@@ -23,11 +24,16 @@ public class MySQLOperatorDAO implements OperatorDAO {
 		catch (SQLException e) {throw new DALException(e); }
 	}
 
+	@Override
 	public void createOperator(OperatorDTO opr) throws DALException {
-		Connector.doUpdate("CALL create_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
-				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');");
+		if(Connector.doUpdate("CALL create_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
+				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');") == 0)
+		{
+			throw new DALException("No rows affected");
+		}
 	}
 
+	@Override
 	public void updateOperator(OperatorDTO opr) throws DALException {
 		if(Connector.doUpdate("CALL update_operator(" + opr.getOprId() + ",'" + opr.getOprName() + "','" + opr.getIni() + "','" + 
 				opr.getCpr() + "','" + opr.getPassword() + "'," + opr.getAdmin() + ",'" + opr.getRole() + "');") == 0)
@@ -36,6 +42,7 @@ public class MySQLOperatorDAO implements OperatorDAO {
 		}
 	}
 
+	@Override
 	public List<OperatorNoPWDTO> getOperatorList() throws DALException {
 		List<OperatorNoPWDTO> list = new ArrayList<OperatorNoPWDTO>();
 		ResultSet rs = Connector.doQuery("SELECT * FROM operator_list;");
