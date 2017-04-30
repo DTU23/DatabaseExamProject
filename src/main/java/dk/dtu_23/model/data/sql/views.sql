@@ -43,3 +43,25 @@ CREATE OR REPLACE VIEW recipe_list AS
   SELECT recipe_id, recipe_name, produce_name, nom_netto, tolerance
   FROM recipe NATURAL JOIN recipecomponent NATURAL JOIN produce
   ORDER BY recipe_id;
+
+# Task 1 - Creates a view that contains all produces, that appears in at least two producebatches.
+# We suppose that the supplier is without significance of the shown produces.
+CREATE OR REPLACE VIEW produce_with_at_least_two_occurences_in_producebatch AS
+  SELECT produce_name
+  FROM produce NATURAL JOIN producebatch
+  GROUP BY produce_name
+  HAVING count(produce_name) > 1;
+
+# Task 2 - Creates a view from recipecomponent that shows the recipe id, the recipe name and the produce name
+CREATE OR REPLACE VIEW recipe_overview AS
+  SELECT recipe_id, recipe_name, produce_name
+  FROM recipe NATURAL JOIN recipecomponent NATURAL JOIN produce;
+
+# Task 5 - Creates a view, which shows the recipes that contains the largest amount of tomato
+CREATE OR REPLACE VIEW recipe_containing_most_tomato AS
+  SELECT recipe_name, produce_name, nom_netto
+  FROM recipecomponent NATURAL JOIN recipe NATURAL JOIN produce
+  WHERE produce_name = 'tomat' AND nom_netto = (
+    SELECT MAX(nom_netto)
+    FROM recipecomponent NATURAL JOIN produce NATURAL JOIN recipe
+    WHERE produce_name = 'tomat');

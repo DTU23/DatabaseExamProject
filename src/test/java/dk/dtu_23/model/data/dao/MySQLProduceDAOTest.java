@@ -32,6 +32,7 @@ public class MySQLProduceDAOTest {
 
 	@After
 	public void tearDown() throws Exception{
+		Connector.resetData();
 		produce = null;
 	}
 

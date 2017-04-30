@@ -32,6 +32,7 @@ public class MySQLProduceBatchDAOTest {
 
 	@After
 	public void tearDown() throws Exception{
+		Connector.resetData();
 		produceBatch = null;
 	}
 
