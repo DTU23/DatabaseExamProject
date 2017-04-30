@@ -151,7 +151,7 @@ CREATE PROCEDURE ingredients_that_is_contained_in_number_of_recipes(times_contai
           SELECT produce_name, count(produce_name) AS produce_count
           FROM recipecomponent NATURAL JOIN produce
           GROUP BY produce_name) AS T)
-WHERE produce_count >= times_contained;
+	WHERE produce_count >= times_contained;
   END //
 DELIMITER ;
 
