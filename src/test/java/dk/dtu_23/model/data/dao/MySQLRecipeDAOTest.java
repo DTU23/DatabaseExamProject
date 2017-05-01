@@ -1,29 +1,19 @@
 package dk.dtu_23.model.data.dao;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import static org.hamcrest.CoreMatchers.*;
 
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsSame;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
-import dk.dtu_23.model.data.connector.Connector;
-import dk.dtu_23.model.data.dao.MySQLRecipeDAO;
-import dk.dtu_23.model.data.interfaces.DALException;
-import dk.dtu_23.model.data.interfaces.ProductBatchCompDAO;
-import junit.framework.Assert;
-import dk.dtu_23.model.RecipeCompDTO;
 import dk.dtu_23.model.RecipeDTO;
+import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
 
 public class MySQLRecipeDAOTest {
 
@@ -31,18 +21,14 @@ public class MySQLRecipeDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
-		//TODO mangler noget reset database
-		try { new Connector(); } 
-		catch (InstantiationException e) { e.printStackTrace(); }
-		catch (IllegalAccessException e) { e.printStackTrace(); }
-		catch (ClassNotFoundException e) { e.printStackTrace(); }
-		catch (SQLException e) { e.printStackTrace(); }
+		new Connector();
+		Connector.resetData();
 		recipe = new MySQLRecipeDAO();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		//TODO mangler noget reset database
+		Connector.resetData();
 		recipe = null;
 	}
 
@@ -84,8 +70,8 @@ public class MySQLRecipeDAOTest {
 		try {
 			actual = recipe.getRecipeList();
 		} catch (DALException e) {	System.out.println(e.getMessage());}
-		assertThat(actual.get(0).getRecipeId(), nullValue());
-		assertThat(actual.get(0).getRecipeName(), nullValue());
+		assertThat(actual.get(0).getRecipeId(), notNullValue());
+		assertThat(actual.get(0).getRecipeName(), notNullValue());
 
 	}
 
@@ -109,13 +95,12 @@ public class MySQLRecipeDAOTest {
 	 */
 	@Test
 	public void createRecipeOnExistingID() {
-		RecipeDTO expected = new RecipeDTO(1, "parmaskinke");
 		RecipeDTO actual = null;
+		RecipeDTO expected = new RecipeDTO(3, "capricciosa");
 		try {
-			recipe.createRecipe(expected);
-			actual = recipe.getRecipe(1);
-		}
-		catch (DALException e) {System.out.println(e.getMessage());}
+			recipe.createRecipe(new RecipeDTO(3, "parmaskinke"));
+			actual = recipe.getRecipe(3);	
+		} catch (DALException e) {	System.out.println(e.getMessage());  }
 		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
 	

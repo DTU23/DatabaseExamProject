@@ -25,18 +25,14 @@ public class MySQLRecipeCompDaoTest {
 
 	@Before
 	public void setUp() throws Exception {
-		//TODO mangler noget reset database
-		try { new Connector(); } 
-		catch (InstantiationException e) { e.printStackTrace(); }
-		catch (IllegalAccessException e) { e.printStackTrace(); }
-		catch (ClassNotFoundException e) { e.printStackTrace(); }
-		catch (SQLException e) { e.printStackTrace(); }
+		new Connector();
+		Connector.resetData();
 		recipeComp = new MySQLRecipeCompDAO();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		//TODO mangler noget reset database
+		Connector.resetData();
 		recipeComp = null;
 	}
 
@@ -64,7 +60,7 @@ public class MySQLRecipeCompDaoTest {
 		try {
 			recipeComp.getRecipeComp(4,1);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertThat(errorMsg, is(equalTo("RecipeComp with recipeid 4 and produceid 1 does not exist")));
+		assertThat(errorMsg, is(equalTo("Recipecomponent with recipeid 4 and produceid 1 does not exist")));
 	}
 
 	/**
@@ -94,10 +90,10 @@ public class MySQLRecipeCompDaoTest {
 		try {
 			actual = recipeComp.getRecipeCompList();
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(actual.get(0).getRecipeId(), nullValue());
-		assertThat(actual.get(0).getProduceId(), nullValue());
-		assertThat(actual.get(0).getNomNetto(), nullValue());
-		assertThat(actual.get(0).getTolerance(), nullValue());
+		assertThat(actual.get(0).getRecipeId(), notNullValue());
+		assertThat(actual.get(0).getProduceId(), notNullValue());
+		assertThat(actual.get(0).getNomNetto(), notNullValue());
+		assertThat(actual.get(0).getTolerance(), notNullValue());
 	}
 
 	/**
@@ -125,7 +121,7 @@ public class MySQLRecipeCompDaoTest {
 		try {
 			recipeComp.getRecipeComp(0, 1);
 		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertEquals(errorMsg, is(equalTo("RecipeComp with recipeid 0 and produceid 1 does not exist")));
+		assertEquals(errorMsg, is(equalTo("Recipecomponent with recipeid 0 and produceid 1 does not exist")));
 	}
 	
 }
