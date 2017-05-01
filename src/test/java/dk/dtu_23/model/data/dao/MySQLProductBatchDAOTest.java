@@ -60,7 +60,7 @@ public class MySQLProductBatchDAOTest {
     public void createProductBatch() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
         ProductBatchDTO newPb = new ProductBatchDTO(-1, 0, 1);
-        pbdao.createProductBatch(newPb);
+        pbdao.createProductBatch(newPb, 100);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter-1);
     }
@@ -73,7 +73,7 @@ public class MySQLProductBatchDAOTest {
     public void createProductBatchWithInvalidStatus() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
         ProductBatchDTO newPb = new ProductBatchDTO(-1, -1, 1);
-        pbdao.createProductBatch(newPb);
+        pbdao.createProductBatch(newPb, 10);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
@@ -86,7 +86,7 @@ public class MySQLProductBatchDAOTest {
     public void createProductBatchWithInvalidRecipeID() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
         ProductBatchDTO newPb = new ProductBatchDTO(1, 0, -1);
-        pbdao.createProductBatch(newPb);
+        pbdao.createProductBatch(newPb, 10);
         int batchCountAfter = pbdao.getProductBatchList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
