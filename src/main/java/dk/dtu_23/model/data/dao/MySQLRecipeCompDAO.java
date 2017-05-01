@@ -16,6 +16,8 @@ public class MySQLRecipeCompDAO implements RecipeCompDAO {
 	public RecipeCompDTO getRecipeComp(int recipeId, int produceId) throws DALException {
 		ResultSet rs = Connector.doQuery("SELECT * FROM recipecomponent WHERE recipe_id=" + recipeId + " AND produce_id=" + produceId + ";");
 		try {
+			if (!rs.first())
+				throw new DALException("Recipecomponent with recipeid " + recipeId + " and produceid " + produceId + " does not exist");
 			return new RecipeCompDTO(rs.getInt("recipe_id"), rs.getInt("produce_id"), rs.getDouble("nom_netto"), rs.getDouble("tolerance"));
 		} catch (SQLException e) {
 			throw new DALException(e);

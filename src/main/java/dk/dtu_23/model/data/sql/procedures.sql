@@ -14,6 +14,9 @@ DROP PROCEDURE IF EXISTS get_product_batch_with_largest_quantity;
 DROP PROCEDURE IF EXISTS get_involved_operator;
 DROP PROCEDURE IF EXISTS create_recipe;
 DROP PROCEDURE IF EXISTS create_recipe_component;
+DROP PROCEDURE IF EXISTS number_of_product_batch_components_with_weight_greater_than;
+DROP PROCEDURE IF EXISTS amount_of_produce_in_stock;
+DROP PROCEDURE IF EXISTS ingredients_that_is_contained_in_number_of_recipes;
 DROP PROCEDURE IF EXISTS reset_data;
 
 /**
@@ -96,6 +99,20 @@ END //
 DELIMITER ;
 
 /**
+Q2 - Shows the amount of specified produce_name that is in stock.
+ */
+DELIMITER //
+CREATE PROCEDURE amount_of_produce_in_stock(produce_name TEXT)
+  BEGIN
+    SELECT (
+      SELECT sum(producebatch.amount)
+      FROM produce NATURAL JOIN producebatch
+      WHERE produce_name = produce.produce_name)
+    AS amount_in_stock;
+  END //
+DELIMITER ;
+
+/**
 Produce
  */
 DELIMITER //
@@ -120,6 +137,22 @@ BEGIN
     supplier = input_supplier
   WHERE input_produce_id = produce_id;
 END //
+DELIMITER ;
+
+/**
+Q4 - Returns a list with the names of ingredients that are contained in the specified
+number or more recipes.
+ */
+DELIMITER //
+CREATE PROCEDURE ingredients_that_is_contained_in_number_of_recipes(times_contained INT)
+  BEGIN
+    SELECT produce_name
+    FROM ((
+          SELECT produce_name, count(produce_name) AS produce_count
+          FROM recipecomponent NATURAL JOIN produce
+          GROUP BY produce_name) AS T)
+	WHERE produce_count >= times_contained;
+  END //
 DELIMITER ;
 
 /**
@@ -207,6 +240,20 @@ CREATE PROCEDURE get_involved_operator
   BEGIN
     SELECT DISTINCT(opr_name) FROM product_batch_component_overview NATURAL JOIN operator
     WHERE recipe_name = input_recipe_name;
+  END //
+DELIMITER ;
+
+/**
+Q1 - Counts the number og product batch components weighing more than specified weight.
+ */
+DELIMITER //
+CREATE PROCEDURE number_of_product_batch_components_with_weight_greater_than(weight INT)
+  BEGIN
+    SELECT (
+      SELECT count(*)
+      FROM productbatchcomponent
+      WHERE netto > weight)
+    AS count;
   END //
 DELIMITER ;
 

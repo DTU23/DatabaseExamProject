@@ -115,8 +115,7 @@ public class MySQLOperatorDAOTest {
 	@Test
 	public void testUpdateOperator() {
 		OperatorDTO newOpr = new OperatorDTO(5,"Don Juan","DJ","000000-0000","iloveyou",false,"Operator");
-		OperatorDTO editObject = new OperatorDTO(5,null,"DoJu",null,null,false,null);
-		OperatorDTO expectedOpr = new OperatorDTO(5,"Don Juan","DoJu","000000-0000","iloveyou",false,"Operator");
+		OperatorDTO editObject = new OperatorDTO(5,"Don Juan","DoJu","000000-0000","iloveyou",false,"Operator");
 		OperatorDTO OprCheckBeforeEdit = null;
 		OperatorDTO OprCheckAfterEdit = null;
 		try {
@@ -134,7 +133,7 @@ public class MySQLOperatorDAOTest {
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(OprCheckBeforeEdit, notNullValue());
 		assertThat(OprCheckAfterEdit, notNullValue());
-		assertThat(expectedOpr.toString(), is(equalTo(OprCheckAfterEdit.toString())));
+		assertThat(editObject.toString(), is(equalTo(OprCheckAfterEdit.toString())));
 		assertThat(OprCheckBeforeEdit.toString(), is(not(equalTo(OprCheckAfterEdit.toString()))));
 	}
 
