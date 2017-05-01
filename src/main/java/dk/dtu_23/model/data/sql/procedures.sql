@@ -243,11 +243,9 @@ Q1 - Counts the number og product batch components weighing more than specified 
 DELIMITER //
 CREATE PROCEDURE number_of_product_batch_components_with_weight_greater_than(weight INT)
   BEGIN
-    SELECT (
-      SELECT count(*)
+      SELECT count(*) AS count
       FROM productbatchcomponent
-      WHERE netto > weight)
-    AS count;
+      WHERE netto > weight;
   END //
 DELIMITER ;
 
