@@ -1,23 +1,21 @@
 package dk.dtu_23.model.data.dao;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import dk.dtu_23.model.data.connector.Connector;
-import dk.dtu_23.model.data.dao.MySQLRecipeCompDAO;
-import dk.dtu_23.model.data.interfaces.DALException;
 import dk.dtu_23.model.RecipeCompDTO;
-import dk.dtu_23.model.RecipeDTO;
+import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
 
 public class MySQLRecipeCompDaoTest {
 
