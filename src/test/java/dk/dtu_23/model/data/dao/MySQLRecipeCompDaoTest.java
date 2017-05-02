@@ -74,10 +74,10 @@ public class MySQLRecipeCompDaoTest {
 			actual = recipeComp.getRecipeCompList(1);
 			
 		} catch (DALException e) { System.out.println(e.getMessage()); }
-		assertThat(actual.get(1).getRecipeId(), nullValue());
-		assertThat(actual.get(1).getProduceId(), nullValue());
-		assertThat(actual.get(1).getNomNetto(), nullValue());
-		assertThat(actual.get(1).getTolerance(), nullValue());
+		assertThat(actual.get(1).getRecipeId(), not(nullValue()));
+		assertThat(actual.get(1).getProduceId(), not(nullValue()));
+		assertThat(actual.get(1).getNomNetto(), not(nullValue()));
+		assertThat(actual.get(1).getTolerance(), not(nullValue()));
 	}
 
 	/**
@@ -102,11 +102,11 @@ public class MySQLRecipeCompDaoTest {
 	
 	@Test
 	public void positiveCreateRecipeComp() {
-		RecipeCompDTO expected = new RecipeCompDTO(4, 1, 1.5, 0.1);
+		RecipeCompDTO expected = new RecipeCompDTO(3, 2, 1.5, 0.1);
 		RecipeCompDTO actual = null;
 		try {
 			recipeComp.createRecipeComp(expected);
-			actual = recipeComp.getRecipeComp(4, 1);
+			actual = recipeComp.getRecipeComp(3, 2);
 		} catch (DALException e) { System.out.println(e.getMessage()); }
 		assertThat(expected.toString(), is(equalTo(actual.toString())));
 	}
@@ -115,13 +115,9 @@ public class MySQLRecipeCompDaoTest {
 	 * get recipe comp with invalid input
 	 */
 	
-	@Test
-	public void getRecipeCompWithInvalidID() {
-		String errorMsg = null;
-		try {
-			recipeComp.getRecipeComp(0, 1);
-		} catch (DALException e) { errorMsg = e.getMessage(); }
-		assertEquals(errorMsg, is(equalTo("Recipecomponent with recipeid 0 and produceid 1 does not exist")));
+	@Test (expected = DALException.class)
+	public void getRecipeCompWithInvalidID() throws Exception{
+		recipeComp.getRecipeComp(0, 1);
 	}
 	
 }
