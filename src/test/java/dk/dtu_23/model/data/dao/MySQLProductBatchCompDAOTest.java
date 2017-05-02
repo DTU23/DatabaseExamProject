@@ -3,6 +3,7 @@ package dk.dtu_23.model.data.dao;
 import dk.dtu_23.model.ProductBatchCompDTO;
 import dk.dtu_23.model.ProductBatchCompOverviewDTO;
 import dk.dtu_23.model.ProductBatchCompSupplierDetailsDTO;
+import dk.dtu_23.model.ProductBatchDTO;
 import dk.dtu_23.model.data.connector.Connector;
 import dk.dtu_23.model.data.interfaces.DALException;
 import org.junit.After;
@@ -55,6 +56,19 @@ public class MySQLProductBatchCompDAOTest {
         assertThat(pbc1, nullValue());
     }
 
+    /**
+     * Tests that the trigger correctly updates product batch status on inserts
+     * @throws Exception
+     */
+    @Test
+    public void testStatusTrigger() throws Exception{
+        ProductBatchDTO pb4 = pbdao.getProductBatch(4);
+        assertThat(pb4.getStatus(), is(equalTo(1)));
+        ProductBatchCompDTO pbc1 = new ProductBatchCompDTO(4, 2, 5, 10, 1);
+        pbcdao.createProductBatchComp(pbc1);
+        pb4 = pbdao.getProductBatch(4);
+        assertThat(pb4.getStatus(), is(equalTo(2)));
+    }
     /**
      * Positive test for createProductBatchComp
      * @throws Exception
