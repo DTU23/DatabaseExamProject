@@ -7,13 +7,20 @@ DROP PROCEDURE IF EXISTS create_produce;
 DROP PROCEDURE IF EXISTS update_produce_by_id;
 DROP PROCEDURE IF EXISTS create_product_batch_component;
 DROP PROCEDURE IF EXISTS get_product_batch_component_supplier_details_by_pb_id;
-DROP PROCEDURE IF EXISTS search_product_batch_component;
 DROP PROCEDURE IF EXISTS create_product_batch_from_recipe_id;
 DROP PROCEDURE IF EXISTS update_product_batch_status;
-DROP PROCEDURE IF EXISTS get_product_batch_with_largest_quantity;
-DROP PROCEDURE IF EXISTS get_involved_operator;
 DROP PROCEDURE IF EXISTS create_recipe;
 DROP PROCEDURE IF EXISTS create_recipe_component;
+# Tasks
+DROP PROCEDURE IF EXISTS produce_with_at_least_number_occurences_in_producebatch;
+DROP PROCEDURE IF EXISTS recipe_name_of_recipes_containing_one_of_two_ingredients;
+DROP PROCEDURE IF EXISTS recipe_name_of_recipes_containing_two_ingredients;
+DROP PROCEDURE IF EXISTS recipe_name_of_recipes_not_containing_ingredient;
+DROP PROCEDURE IF EXISTS recipe_containing_most_of_ingredient;
+DROP PROCEDURE IF EXISTS get_product_batch_with_largest_quantity;
+DROP PROCEDURE IF EXISTS get_involved_operator;
+
+# Q's
 DROP PROCEDURE IF EXISTS number_of_product_batch_components_with_weight_greater_than;
 DROP PROCEDURE IF EXISTS amount_of_produce_in_stock;
 DROP PROCEDURE IF EXISTS ingredients_that_is_contained_in_number_of_recipes;
@@ -136,6 +143,21 @@ END //
 DELIMITER ;
 
 /**
+Produce (Foreman)
+Task 1 - Creates a view that contains all produces, that appears in at least two producebatches.
+We assume that the supplier is without significance of the shown produces.
+*/
+DELIMITER //
+CREATE PROCEDURE produce_with_at_least_number_occurences_in_producebatch(produce_count INT)
+  BEGIN
+    SELECT produce_name
+    FROM produce NATURAL JOIN producebatch
+    GROUP BY produce_name
+    HAVING count(produce_name) >= produce_count;
+  END //
+DELIMITER ;
+
+/**
 Q4 - Returns a list with the names of ingredients that are contained in the specified
 number or more recipes.
  */
@@ -147,7 +169,7 @@ CREATE PROCEDURE ingredients_that_is_contained_in_number_of_recipes(times_contai
           SELECT produce_name, count(produce_name) AS produce_count
           FROM recipecomponent NATURAL JOIN produce
           GROUP BY produce_name) AS T)
-	WHERE produce_count >= times_contained;
+	  WHERE produce_count >= times_contained;
   END //
 DELIMITER ;
 
@@ -179,26 +201,9 @@ BEGIN
 END //
 DELIMITER ;
 
-
-DELIMITER //
-CREATE PROCEDURE search_product_batch_component
-  (
-    IN input_pb_id INT,
-    IN input_rb_id INT,
-    IN input_netto DOUBLE
-  )
-  BEGIN
-    SELECT pb_id, rb_id, netto
-    FROM productbatchcomponent
-    WHERE pb_id = input_pb_id
-    AND rb_id = input_rb_id
-    and netto = input_netto;
-  END //
-DELIMITER ;
-
 /**
 Product_batch
- */
+*/
 DELIMITER //
 CREATE PROCEDURE create_product_batch_from_recipe_id
 (
@@ -210,27 +215,40 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE update_product_batch_status
-(IN input_pb_id INT, IN input_status INT)
-BEGIN
-  UPDATE productbatch SET
-    status = input_status
-  WHERE productbatch.pb_id = input_pb_id;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE get_product_batch_with_largest_quantity
-  (IN input_produce_name TEXT)
+CREATE PROCEDURE update_product_batch_status(IN input_pb_id INT, IN input_status INT)
   BEGIN
-    SELECT pb_id, produce_name, MAX(netto) AS "netto" FROM product_batch_component_overview
-    WHERE produce_name = input_produce_name;
+    UPDATE productbatch
+    SET status = input_status
+    WHERE productbatch.pb_id = input_pb_id;
   END //
 DELIMITER ;
 
+/**
+Product_batch
+Task 7 -
+ */
 DELIMITER //
-CREATE PROCEDURE get_involved_operator
-  (IN input_recipe_name TEXT)
+CREATE PROCEDURE get_product_batch_with_largest_quantity(IN input_produce_name TEXT)
+  BEGIN
+    SELECT pb_id, produce_name, netto
+    FROM ((
+      SELECT pb_id, produce_name, netto
+      FROM product_batch_component_overview
+      WHERE produce_name = input_produce_name) AS T)
+    WHERE netto = (SELECT MAX(netto)
+                   FROM (
+                      SELECT pb_id, produce_name, netto
+                      FROM product_batch_component_overview
+                      WHERE produce_name = input_produce_name) AS T2);
+  END //
+DELIMITER ;
+
+/**
+Product_batch
+Task 8 -
+ */
+DELIMITER //
+CREATE PROCEDURE get_involved_operator(IN input_recipe_name TEXT)
   BEGIN
     SELECT DISTINCT(opr_name) FROM product_batch_component_overview NATURAL JOIN operator
     WHERE recipe_name = input_recipe_name;
@@ -260,6 +278,70 @@ CREATE PROCEDURE create_recipe
 BEGIN
   INSERT INTO recipe(recipe_name) VALUES(input_recipe_name);
 END //
+DELIMITER ;
+
+/**
+Recipe name of recipes containing champignon OR skinke
+Task 3 - Part 1 of task 3. Creates a view of recipes containing the ingredients 'skinke' OR 'champignon'
+*/
+DELIMITER //
+CREATE PROCEDURE recipe_name_of_recipes_containing_one_of_two_ingredients(first_ing TEXT, second_ing TEXT)
+  BEGIN
+    SELECT DISTINCT recipe_name
+    FROM recipe NATURAL JOIN recipecomponent NATURAL JOIN produce
+    WHERE produce_name = first_ing OR produce_name =second_ing;
+  END //
+DELIMITER ;
+
+/**
+Recipe name of recipes containing champignon AND skinke
+Task 3 - Part 2 of task 3. Creates a view of recipes containing the ingredients 'skinke' AND 'champignon'
+*/
+DELIMITER //
+CREATE PROCEDURE recipe_name_of_recipes_containing_two_ingredients(first_ing TEXT, second_ing TEXT)
+  BEGIN
+    SELECT t1.recipe_name
+    FROM (((SELECT recipe_name
+            FROM recipecomponent NATURAL JOIN produce NATURAL JOIN recipe
+            WHERE produce_name = first_ing) AS t1)
+            INNER JOIN
+          ((SELECT recipe_name
+            FROM recipecomponent NATURAL JOIN produce NATURAL JOIN recipe
+            WHERE produce_name =second_ing) AS t2)
+    ON t1.recipe_name = t2.recipe_name);
+  END //
+DELIMITER ;
+
+/**
+Recipe name of recipes not containing champignon
+Task 4 - Creates a view of recipes not containing the ingredient 'champignon'
+*/
+DELIMITER //
+CREATE PROCEDURE recipe_name_of_recipes_not_containing_ingredient(ingredient TEXT)
+  BEGIN
+    SELECT DISTINCT recipe_name
+    FROM recipe NATURAL JOIN recipecomponent
+    WHERE NOT recipe_id =(
+      SELECT recipe_id
+      FROM produce NATURAL JOIN recipecomponent
+      WHERE produce_name = ingredient);
+  END //
+DELIMITER ;
+
+/**
+recipe (Pharmacist)
+Task 5 - Creates a view, which shows the recipes that contains the largest amount of tomato
+ */
+DELIMITER //
+CREATE PROCEDURE recipe_containing_most_of_ingredient(ingredient TEXT)
+  BEGIN
+    SELECT recipe_name, produce_name, nom_netto
+    FROM recipecomponent NATURAL JOIN recipe NATURAL JOIN produce
+    WHERE produce_name = ingredient AND nom_netto = (
+      SELECT MAX(nom_netto)
+      FROM recipecomponent NATURAL JOIN produce NATURAL JOIN recipe
+      WHERE produce_name = ingredient);
+  END //
 DELIMITER ;
 
 /**
