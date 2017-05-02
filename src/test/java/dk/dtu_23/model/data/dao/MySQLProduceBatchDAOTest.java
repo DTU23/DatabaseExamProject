@@ -102,7 +102,7 @@ public class MySQLProduceBatchDAOTest {
 		ProduceBatchDTO actual = null;
 		ProduceBatchDTO expected = new ProduceBatchDTO(8, "tomat", "Franz", amount);
 
-		produceBatch.createProduceBatch(produceDTO, amount);
+		produceBatch.createProduceBatch(produceDTO.getProduceId(), amount);
 		actual = produceBatch.getProduceBatch(8);
 
 		assertThat(actual.toString(), is(expected.toString()));
@@ -117,7 +117,7 @@ public class MySQLProduceBatchDAOTest {
 		ProduceBatchDTO actual = null;
 		double amount = 600;
 
-		produceBatch.updateProduceBatch(pbDTO, amount);
+		produceBatch.updateProduceBatch(pbDTO.getId(), amount);
 		actual = produceBatch.getProduceBatch(3);
 
 		assertThat(actual.toString(), is(not(pbDTO.toString())));
@@ -136,7 +136,7 @@ public class MySQLProduceBatchDAOTest {
 
 		// We expect this won't work, and therefore we try-catch a DALException
 		try {
-			produceBatch.updateProduceBatch(pbDTO, amount);
+			produceBatch.updateProduceBatch(pbDTO.getId(), amount);
 			actual = produceBatch.getProduceBatch(12);
 		} catch (DALException e) {
 			// e.printStackTrace();
