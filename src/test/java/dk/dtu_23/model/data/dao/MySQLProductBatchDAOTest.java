@@ -68,18 +68,6 @@ public class MySQLProductBatchDAOTest {
      * Negative test for createProductBatch
      * @throws Exception
      */
-    @Test(expected = DALException.class)
-    public void createProductBatchWithInvalidStatus() throws Exception {
-        int batchCountBefore = pbdao.getProductBatchList().size();
-        pbdao.createProductBatch(1);
-        int batchCountAfter = pbdao.getProductBatchList().size();
-        assertEquals(batchCountBefore, batchCountAfter);
-    }
-
-    /**
-     * Negative test for createProductBatch
-     * @throws Exception
-     */
     @Test(expected=DALException.class)
     public void createProductBatchWithInvalidRecipeID() throws Exception {
         int batchCountBefore = pbdao.getProductBatchList().size();
