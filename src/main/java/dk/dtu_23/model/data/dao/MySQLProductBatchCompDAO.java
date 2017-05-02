@@ -42,7 +42,7 @@ public class MySQLProductBatchCompDAO implements ProductBatchCompDAO {
 	}
 
 	@Override
-	public List<ProductBatchCompDTO> getProductBatchCompList(int pbId) throws DALException {
+	public List<ProductBatchCompDTO> getProductBatchCompList() throws DALException {
 		List<ProductBatchCompDTO> list = new ArrayList<ProductBatchCompDTO>();
 		ResultSet rs = Connector.doQuery("SELECT * FROM productbatchcomponent;");
 		try

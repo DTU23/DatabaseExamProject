@@ -62,9 +62,9 @@ public class MySQLProductBatchCompDAOTest {
     @Test
     public void createProductBatchComp() throws Exception {
         int pb_id = 5;
-        int batchCountBefore = pbcdao.getProductBatchCompList(pb_id).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList().size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(pb_id, 1, 10, 10, 1));
-        int batchCountAfter = pbcdao.getProductBatchCompList(pb_id).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList().size();
         assertEquals(batchCountBefore, batchCountAfter-1);
         assertThat(pbdao.getProductBatch(pb_id).getStatus(), is(not(0)));
     }
@@ -75,10 +75,10 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidID() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList().size();
         ProductBatchCompDTO pbc = new ProductBatchCompDTO(-1, 1, 10, 10, 1);
         pbcdao.createProductBatchComp(pbc);
-        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
@@ -88,9 +88,9 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidNetto() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList().size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, 10, -10, 1));
-        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
@@ -100,9 +100,9 @@ public class MySQLProductBatchCompDAOTest {
      */
     @Test(expected = DALException.class)
     public void createProductBatchCompWithInvalidTara() throws Exception {
-        int batchCountBefore = pbcdao.getProductBatchCompList(1).size();
+        int batchCountBefore = pbcdao.getProductBatchCompList().size();
         pbcdao.createProductBatchComp(new ProductBatchCompDTO(1, 1, -10, 10, 1));
-        int batchCountAfter = pbcdao.getProductBatchCompList(1).size();
+        int batchCountAfter = pbcdao.getProductBatchCompList().size();
         assertEquals(batchCountBefore, batchCountAfter);
     }
 
@@ -113,7 +113,7 @@ public class MySQLProductBatchCompDAOTest {
     @Test
     public void getProductBatchCompList() throws Exception {
         List<ProductBatchCompDTO> pbcl;
-        pbcl = pbcdao.getProductBatchCompList(1);
+        pbcl = pbcdao.getProductBatchCompList();
         assertThat(pbcl, notNullValue());
     }
 
