@@ -7,9 +7,15 @@ CREATE OR REPLACE VIEW operator_list AS
 
 /**
 produce (Foreman)
-Q3 - Shows an overview of how much os each produce type is in stock.
  */
 CREATE OR REPLACE VIEW produce_overview AS
+  SELECT produce.produce_id, produce.produce_name, producebatch.amount
+  FROM produce NATURAL JOIN producebatch;
+
+/**
+Q3 - Shows an overview of how much os each produce type is in stock.
+ */
+CREATE OR REPLACE VIEW produce_overview_sum AS
   SELECT produce.produce_name, SUM(producebatch.amount) AS "amount"
   FROM produce NATURAL JOIN producebatch
   GROUP BY produce.produce_name;
