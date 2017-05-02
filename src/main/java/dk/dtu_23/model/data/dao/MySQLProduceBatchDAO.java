@@ -63,23 +63,23 @@ public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 	 * The method calls a routine defined in the database.
 	 * The routine only needs an already existing produceId and the specified amount of the batch.
 	 * Uses the routine 'create_produce_batch_from_produce_id'.
-	 * @param produce - an already existing produce (only uses produceId)
+	 * @param produce_id - an already existing produce (only uses produceId)
 	 * @param amount - the specified amount of the new produce batch
 	 */
 	@Override
-	public void createProduceBatch(ProduceDTO produce, double amount) throws DALException {
-		Connector.doQuery("CALL create_produce_batch_from_produce_id("+produce.getProduceId()+", "+amount+");");
+	public void createProduceBatch(int produce_id, double amount) throws DALException {
+		Connector.doQuery("CALL create_produce_batch_from_produce_id("+produce_id+", "+amount+");");
 	}
 
 	/**
 	 * Updates a produce batch in the relation 'producebatch'.
 	 * The update will ONLY update the amount in the tuple, where the producebatch ID is specified.
 	 * Uses the routine 'update_produce_batch_by_id(INT, DOUBLE)'.
-	 * @param producebatch - the produce batch that is getting updated (only using producebatch ID)
+	 * @param produce_id - the produce batch that is getting updated (only using producebatch ID)
 	 * @param amount - the new amount
 	 */
 	@Override
-	public void updateProduceBatch(ProduceBatchDTO producebatch, double amount) throws DALException {
-		Connector.doQuery("CALL update_produce_batch_by_id("+producebatch.getId()+", "+amount+");");
+	public void updateProduceBatch(int produce_id, double amount) throws DALException {
+		Connector.doQuery("CALL update_produce_batch_by_id("+produce_id+", "+amount+");");
 	}
 }
