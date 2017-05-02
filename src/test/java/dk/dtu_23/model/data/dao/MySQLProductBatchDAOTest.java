@@ -36,7 +36,7 @@ public class MySQLProductBatchDAOTest {
     @Test
     public void getProductBatch() throws Exception {
         ProductBatchDTO pb1, expected;
-        expected = new ProductBatchDTO(1, 1, 1);
+        expected = new ProductBatchDTO(1, 2, 1);
         pb1 = pbdao.getProductBatch(1);
         assertThat(pb1.toString(), is(equalTo(expected.toString())));
     }
