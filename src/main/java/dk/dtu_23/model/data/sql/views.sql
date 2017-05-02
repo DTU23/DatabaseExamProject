@@ -64,6 +64,42 @@ CREATE OR REPLACE VIEW recipe_overview AS
   SELECT recipe_id, recipe_name, produce_name
   FROM recipe NATURAL JOIN recipecomponent NATURAL JOIN produce;
 
+
+/**
+ * Recipe name of recipes containing champignon OR skinke
+Task 3 - Part 1 of task 3. Creates a view of recipes containing the ingredients 'skinke' OR 'champignon'
+*/
+
+CREATE OR REPLACE VIEW recipe_name_of_recipes_containing_champignon_or_skinke AS
+SELECT DISTINCT recipe_name
+FROM recipe NATURAL JOIN recipecomponent NATURAL JOIN produce
+WHERE produce_name = 'champignon' OR produce_name ='skinke';
+
+/**
+ * Recipe name of recipes containing champignon AND skinke
+#Task 3 - Part 2 of task 3. Creates a view of recipes containing the ingredients 'skinke' AND 'champignon'
+*/
+CREATE OR REPLACE VIEW recipe_name_of_recipes_containing_champignon_and_skinke AS
+SELECT recipe_name
+FROM
+recipecomponent NATURAL JOIN produce NATURAL JOIN recipe
+WHERE produce_name = 'skinke' or produce_name = 'champignon'
+GROUP BY recipe_name
+HAVING COUNT(recipe_id) = 2;  
+  
+/**
+ * Recipe name of recipes not containing champignon
+#Task 4 - Creates a view of recipes not containing the ingredient 'champignon' 
+*/
+CREATE OR REPLACE VIEW recipe_name_of_recipes_not_containing_champignon AS
+SELECT DISTINCT recipe_name
+FROM recipe NATURAL JOIN recipecomponent 
+WHERE NOT recipe_id = 
+(SELECT recipe_id
+FROM 
+produce NATURAL JOIN recipecomponent
+WHERE produce_name = 'champignon');
+  
 /**
 recipe (Pharmacist)
 Task 5 - Creates a view, which shows the recipes that contains the largest amount of tomato
