@@ -30,7 +30,7 @@ CREATE OR REPLACE VIEW product_batch_list AS
 
 /**
 product_batch (Foreman)
-Task 6 -
+Task 6 - create view to select product batch id, produce batch id and netto weighting
 */
 CREATE OR REPLACE VIEW product_batch_netto_list AS
     SELECT pb_id, rb_id, netto
@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW product_batch_netto_list AS
 
 /**
 product_batch_component (Pharmacist)
-Task 9 -
+Task 9 - Creates a view to display various information across recipe, productbatch, productbatchcomponent and producebatch + produce
 */
 CREATE OR REPLACE VIEW product_batch_component_overview AS
   SELECT pb_id, recipe_name, productbatch.status, produce_name, netto, opr_id

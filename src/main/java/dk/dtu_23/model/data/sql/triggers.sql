@@ -1,3 +1,6 @@
+/**
+Trigger will ensure product batch statuses are properly set when weightings are added to the database dependent on how many weightings has been made on a productbatch compared to how many the recipe says it should have.
+ */
 DROP TRIGGER IF EXISTS after_component_insert;
 DELIMITER //
 CREATE TRIGGER after_component_insert
