@@ -143,8 +143,7 @@ END //
 DELIMITER ;
 
 /**
-Produce (Foreman)
-Task 1 - Creates a view that contains all produces, that appears in at least two producebatches.
+Task 1 - Shows produce with at least 'x' amount of occurences in producebatches.
 We assume that the supplier is without significance of the shown produces.
 */
 DELIMITER //
@@ -329,8 +328,7 @@ CREATE PROCEDURE recipe_name_of_recipes_not_containing_ingredient(ingredient TEX
 DELIMITER ;
 
 /**
-recipe (Pharmacist)
-Task 5 - Creates a view, which shows the recipes that contains the largest amount of tomato
+Task 5 - Shows the recipes, which contains the largest amount of any ingredient
  */
 DELIMITER //
 CREATE PROCEDURE recipe_containing_most_of_ingredient(ingredient TEXT)
