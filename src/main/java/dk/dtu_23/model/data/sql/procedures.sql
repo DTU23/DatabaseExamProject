@@ -225,7 +225,7 @@ DELIMITER ;
 
 /**
 Product_batch
-Task 7 -
+Task 7 - Finds which product batch has the largest quantity of a certain produce (by produce name
  */
 DELIMITER //
 CREATE PROCEDURE get_product_batch_with_largest_quantity(IN input_produce_name TEXT)
@@ -245,7 +245,7 @@ DELIMITER ;
 
 /**
 Product_batch
-Task 8 -
+Task 8 - Finds the operator(s) that has created a specific recipe
  */
 DELIMITER //
 CREATE PROCEDURE get_involved_operator(IN input_recipe_name TEXT)
