@@ -1,9 +1,8 @@
 package dk.dtu_23.model.data.interfaces;
 
-import dk.dtu_23.model.ProduceBatchDTO;
-import dk.dtu_23.model.ProduceDTO;
-
 import java.util.List;
+
+import dk.dtu_23.model.ProduceBatchDTO;
 
 public interface ProduceBatchDAO {
 	ProduceBatchDTO getProduceBatch(int rbId) throws DALException;
