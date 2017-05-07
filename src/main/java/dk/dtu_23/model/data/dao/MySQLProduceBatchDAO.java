@@ -1,15 +1,14 @@
 package dk.dtu_23.model.data.dao;
 
-import dk.dtu_23.model.ProduceDTO;
-import dk.dtu_23.model.data.connector.Connector;
-import dk.dtu_23.model.data.interfaces.DALException;
-import dk.dtu_23.model.data.interfaces.ProduceBatchDAO;
-import dk.dtu_23.model.ProduceBatchDTO;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import dk.dtu_23.model.ProduceBatchDTO;
+import dk.dtu_23.model.data.connector.Connector;
+import dk.dtu_23.model.data.interfaces.DALException;
+import dk.dtu_23.model.data.interfaces.ProduceBatchDAO;
 
 public class MySQLProduceBatchDAO implements ProduceBatchDAO {
 
