@@ -19,7 +19,6 @@ DROP PROCEDURE IF EXISTS recipe_name_of_recipes_not_containing_ingredient;
 DROP PROCEDURE IF EXISTS recipe_containing_most_of_ingredient;
 DROP PROCEDURE IF EXISTS get_product_batch_with_largest_quantity;
 DROP PROCEDURE IF EXISTS get_involved_operator;
-
 # Q's
 DROP PROCEDURE IF EXISTS number_of_product_batch_components_with_weight_greater_than;
 DROP PROCEDURE IF EXISTS amount_of_produce_in_stock;
@@ -320,7 +319,7 @@ CREATE PROCEDURE recipe_name_of_recipes_not_containing_ingredient(ingredient TEX
   BEGIN
     SELECT DISTINCT recipe_name
     FROM recipe NATURAL JOIN recipecomponent
-    WHERE NOT recipe_id =(
+    WHERE recipe_id NOT IN (
       SELECT recipe_id
       FROM produce NATURAL JOIN recipecomponent
       WHERE produce_name = ingredient);
